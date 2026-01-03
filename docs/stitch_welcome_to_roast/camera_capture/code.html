@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Camera Capture - ROAST</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ee342b",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#181111", // Keeping the requested hex
+                        "surface-dark": "#221616",
+                        "surface-border": "#392928",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .camera-overlay {
+            background: radial-gradient(ellipse at center, transparent 35%, rgba(24, 17, 17, 0.8) 100%);
+        }
+        .scan-line {
+            width: 100%;
+            height: 2px;
+            background: #ee342b;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: scan 3s infinite linear;
+            box-shadow: 0 0 4px #ee342b, 0 0 10px #ee342b;
+            opacity: 0.6;
+        }
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-x-hidden min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-surface-border px-10 py-4 bg-background-light dark:bg-background-dark z-20">
+<div class="flex items-center gap-4 text-slate-900 dark:text-white">
+<div class="size-6 text-primary">
+<span class="material-symbols-outlined !text-3xl">local_fire_department</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">ROAST</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-slate-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="#">Home</a>
+<a class="text-slate-900 dark:text-white text-sm font-medium transition-colors" href="#">Analysis</a>
+<a class="text-slate-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="#">History</a>
+<a class="text-slate-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="#">Settings</a>
+</nav>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-surface-border" data-alt="User profile avatar placeholder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB8k-UgWbFutUattwiYVcakOxIkVYmow3dssvEJDip81KZD1J0oVROmoLlrXpGQOhUs1WP2rJfqqu0EKtzLOH11QVOOpbwVDyLuuEiqN01bslWL57vzD_R3wOP6xNkqzbGLMDDiKRmR_ow03PblpnFqI33IXDCc479UbHpIVvz_COV1OezRYAIWgfxK_f2iQQhivrzrfkFADDkSWP7Qwc86x3GrarhkdFsPLASqobhubOnIuWO6plCwq-fwq_UhvDRE80aM2xncNRmQ");'></div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow flex flex-col items-center justify-center p-4 md:p-8 relative">
+<div class="layout-content-container flex flex-col w-full max-w-[1024px] gap-8">
+<!-- Header Section -->
+<div class="flex flex-col items-center text-center gap-2">
+<h1 class="text-slate-900 dark:text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">Let's see the damage.</h1>
+<p class="text-slate-500 dark:text-[#b99e9d] text-base md:text-lg font-normal">Center your face. Don't hide. I can see your pores from here.</p>
+</div>
+<!-- Camera & Controls Container -->
+<div class="flex flex-col lg:flex-row gap-6 w-full items-start justify-center">
+<!-- Camera Feed -->
+<div class="relative w-full lg:w-2/3 flex flex-col items-center">
+<!-- Status Badge -->
+<div class="absolute top-4 left-1/2 -translate-x-1/2 z-20 bg-surface-dark/90 backdrop-blur border border-surface-border text-primary px-3 py-1.5 rounded-full flex items-center gap-2 shadow-lg">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+</span>
+<span class="text-xs font-bold uppercase tracking-wider">Live Feed Active</span>
+</div>
+<!-- Main Viewport -->
+<div class="relative w-full aspect-[4/3] bg-black rounded-2xl overflow-hidden border border-surface-border shadow-2xl group">
+<!-- Simulated Camera Feed Image -->
+<div class="absolute inset-0 bg-cover bg-center opacity-80" data-alt="Abstract blurry face silhouette representing camera feed" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA_jhQbqjDbhD5lmMnZeDZ0t8g2QShnbhN3pnenkCvhTUdYhCHYXpO61xEV6pwO7J7eqvaLZija5a3DSMcNqYWcfXtY7IjqPPQxXz9h9gyJwJ7MR64_ChkFnrOl7v_QIg5H6P3IVis_OZICHmivgV1oUKUEy9oPu48jsCXdr6GqTnEM05D5u14JhgK0OF7fgjgCu5mGf1bC-J3g5uZViRJ1hQ413CvlPlpMpkjHoJWXYM7tztBUUQUuYQt0kQUJr39234byyxANLFUM"); filter: blur(4px) brightness(0.7);'></div>
+<!-- Vignette & Overlay -->
+<div class="absolute inset-0 camera-overlay pointer-events-none"></div>
+<!-- Face Guide Overlay (Oval) -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[380px] md:w-[320px] md:h-[440px] border-2 border-white/30 rounded-[50%] shadow-[0_0_50px_rgba(0,0,0,0.5)] flex items-center justify-center">
+<!-- Crosshair markers -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-0.5 h-4 bg-white/50"></div>
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0.5 h-4 bg-white/50"></div>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 w-4 bg-white/50"></div>
+<div class="absolute right-0 top-1/2 -translate-y-1/2 h-0.5 w-4 bg-white/50"></div>
+</div>
+<!-- Scanning Animation Line -->
+<div class="scan-line"></div>
+<!-- Warnings / Contextual Messages -->
+<div class="absolute bottom-8 left-0 right-0 flex justify-center">
+<div class="bg-black/60 backdrop-blur-sm text-white text-sm font-medium px-4 py-2 rounded-lg border border-white/10 flex items-center gap-2">
+<span class="material-symbols-outlined text-yellow-400 text-[18px]">light_mode</span>
+                                Too dark. Even for my dark humor.
+                            </div>
+</div>
+</div>
+<!-- Capture Action Area -->
+<div class="mt-6 flex flex-col items-center gap-3 w-full max-w-md">
+<button class="group relative flex w-full cursor-not-allowed items-center justify-center overflow-hidden rounded-xl h-14 px-8 bg-surface-dark border border-surface-border text-gray-500 gap-3 transition-all duration-300 hover:bg-surface-border disabled:opacity-70 disabled:hover:bg-surface-dark" disabled="">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">photo_camera</span>
+<span class="text-lg font-bold tracking-wide">Capture Face</span>
+<!-- Tooltip/Badge for disabled state -->
+<div class="absolute right-4 text-xs font-normal text-red-400 opacity-100 transition-opacity">
+                                No face detected
+                            </div>
+</button>
+<p class="text-xs text-slate-500 dark:text-gray-500">Photos are processed securely and deleted after the roast.</p>
+</div>
+</div>
+<!-- Instructions Sidebar -->
+<div class="w-full lg:w-1/3 flex flex-col gap-4">
+<div class="bg-white dark:bg-surface-dark border border-gray-200 dark:border-surface-border rounded-xl p-6 h-full">
+<h3 class="text-slate-900 dark:text-white text-xl font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">checklist</span>
+                            Checklist
+                        </h3>
+<div class="space-y-6">
+<div class="flex gap-4 items-start">
+<div class="bg-green-500/10 p-2 rounded-lg text-green-500 shrink-0">
+<span class="material-symbols-outlined">face_retouching_natural</span>
+</div>
+<div>
+<h4 class="text-slate-900 dark:text-white font-bold text-sm">Neutral Expression</h4>
+<p class="text-slate-500 dark:text-gray-400 text-sm mt-1">Don't smile. Don't frown. Just look like you realized it's Monday.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<div class="bg-yellow-500/10 p-2 rounded-lg text-yellow-500 shrink-0">
+<span class="material-symbols-outlined">wb_incandescent</span>
+</div>
+<div>
+<h4 class="text-slate-900 dark:text-white font-bold text-sm">Good Lighting</h4>
+<p class="text-slate-500 dark:text-gray-400 text-sm mt-1">Face a window or a lamp. Shadows hide your flaws, and we need those.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<div class="bg-red-500/10 p-2 rounded-lg text-primary shrink-0">
+<span class="material-symbols-outlined">block</span>
+</div>
+<div>
+<h4 class="text-slate-900 dark:text-white font-bold text-sm">No Accessories</h4>
+<p class="text-slate-500 dark:text-gray-400 text-sm mt-1">Remove glasses, masks, and that desperate look in your eyes.</p>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-gray-200 dark:border-surface-border">
+<div class="bg-background-light dark:bg-black/30 rounded-lg p-4 flex gap-3 items-center">
+<span class="material-symbols-outlined text-gray-400">lock</span>
+<p class="text-xs text-slate-500 dark:text-gray-500 leading-relaxed">
+                                    Your image is analyzed by AI and not stored permanently on our servers. Honesty is our only policy.
+                                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Permission Denied State (Hidden by default, shown for demonstration structure) -->
+<!-- 
+    <div class="hidden absolute inset-0 z-50 bg-background-dark/95 backdrop-blur-md flex flex-col items-center justify-center text-center p-4">
+        <div class="bg-surface-dark p-8 rounded-2xl border border-surface-border max-w-md w-full shadow-2xl">
+            <div class="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center text-primary mx-auto mb-4">
+                <span class="material-symbols-outlined text-3xl">videocam_off</span>
+            </div>
+            <h3 class="text-white text-2xl font-bold mb-2">Camera Blocked</h3>
+            <p class="text-gray-400 mb-6">I can't roast you if I can't see you. Enable camera access in your browser settings, unless you're afraid.</p>
+            <button class="w-full bg-primary hover:bg-red-600 text-white font-bold py-3 px-4 rounded-xl transition-colors">
+                Try Again
+            </button>
+        </div>
+    </div> 
+    -->
+</body></html>

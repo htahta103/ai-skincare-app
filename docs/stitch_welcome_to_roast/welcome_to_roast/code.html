@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Welcome to ROAST</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ff382e",
+                        "background-light": "#f8f5f5",
+                        "background-dark": "#23100f",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body>
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden font-display">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap px-10 py-6">
+<div class="flex items-center gap-2 text-[#181110] dark:text-white">
+<div class="size-8 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined !text-4xl">local_fire_department</span>
+</div>
+<h2 class="text-2xl font-bold leading-tight tracking-[-0.015em]">ROAST</h2>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-transparent hover:bg-black/5 dark:hover:bg-white/5 text-[#181110] dark:text-white text-sm font-bold leading-normal tracking-[0.015em] transition-colors">
+<span class="truncate">Log In</span>
+</button>
+</header>
+<!-- Main Content Area -->
+<main class="flex flex-1 justify-center py-5 px-4 md:px-10 lg:px-40">
+<div class="layout-content-container flex flex-col max-w-[1200px] flex-1 justify-center">
+<div class="@container">
+<div class="flex flex-col-reverse gap-12 px-4 py-10 @[864px]:flex-row @[864px]:items-center">
+<!-- Text Content -->
+<div class="flex flex-col gap-8 flex-1 @[864px]:pr-10">
+<div class="flex flex-col gap-4 text-left">
+<h1 class="text-[#181110] dark:text-white text-5xl md:text-7xl font-bold leading-[1.1] tracking-[-0.033em]">
+                                        Welcome to <span class="text-primary">ROAST</span>.
+                                    </h1>
+<h2 class="text-[#181110]/80 dark:text-white/80 text-xl md:text-2xl font-normal leading-relaxed font-body">
+                                        The friend your skin deserves. <br class="hidden md:block"/>
+                                        No sugarcoating. Just results.
+                                    </h2>
+</div>
+<div class="flex flex-col gap-3 sm:items-start">
+<button class="flex min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-14 px-8 bg-primary hover:bg-primary/90 text-white text-lg font-bold leading-normal tracking-[0.015em] shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5">
+<span class="truncate">Get Started</span>
+<span class="material-symbols-outlined ml-2 text-xl">arrow_forward</span>
+</button>
+<p class="text-xs text-[#181110]/50 dark:text-white/50 font-medium pl-1">Join 10,000+ happy skins roasting today.</p>
+</div>
+</div>
+<!-- Image/Visual Anchor -->
+<div class="w-full flex-1 aspect-[4/3] relative rounded-2xl overflow-hidden shadow-2xl @[864px]:w-1/2">
+<div class="absolute inset-0 bg-black/10 z-10"></div>
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transform hover:scale-105 transition-transform duration-700" data-alt="Close up of diverse skin texture with soft lighting" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAB9AGjf232U4I2w_aEpS-d0x_fVfLllyB0Hk6anpDTjVUz9KegmlIpjgn7HvK54aeYuIVwFVdvw2RjW5DIdPFCi0DZKXdb6NfmrVjGCzvoOtegwGMvxnI9-3u_XJ0dP_P-BO8s8Ap_ABWLH-VtCxSnHaB0UEDRWybcyMVnFqHZ8JWMo4YfsFMWVRSfXVjyyPqyeh05JxQhD2m_Y-n3hzSEszO6m24_P6we4adRMWDHRe-gG4Vi1ZzCZut-P3VD0_SOKTl3grteI_aM");'>
+</div>
+<!-- Decorative Badge -->
+<div class="absolute bottom-6 left-6 z-20 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-4 py-3 rounded-lg border border-white/20 shadow-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">verified</span>
+<div>
+<p class="text-xs font-bold uppercase tracking-wider text-[#181110] dark:text-white">High-End Honesty</p>
+<p class="text-[10px] text-[#181110]/60 dark:text-white/60">Certified Sass Included</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="flex flex-col gap-6 px-10 py-8 text-center border-t border-[#181110]/5 dark:border-white/5 mt-auto">
+<div class="flex flex-col md:flex-row items-center justify-between gap-6 max-w-[1200px] mx-auto w-full">
+<p class="text-[#181110]/40 dark:text-white/40 text-sm font-normal leading-normal">© 2024 ROAST. All burns reserved.</p>
+<div class="flex flex-wrap items-center justify-center gap-8">
+<a class="text-[#181110]/60 dark:text-white/60 hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Privacy Policy</a>
+<a class="text-[#181110]/60 dark:text-white/60 hover:text-primary transition-colors text-sm font-medium leading-normal" href="#">Terms of Service</a>
+</div>
+</div>
+</footer>
+</div>
+</div>
+</body></html>

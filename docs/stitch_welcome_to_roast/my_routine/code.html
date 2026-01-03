@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Routine - ROAST</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ee342b",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#181111", // Matches the example background
+                        "surface-dark": "#271c1c", // Matches the example card
+                        "surface-dark-hover": "#362424",
+                        "text-secondary": "#b99e9d",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-gray-900 dark:text-white font-display overflow-x-hidden selection:bg-primary selection:text-white">
+<!-- Main Container -->
+<div class="flex flex-col min-h-screen">
+<!-- Header -->
+<header class="sticky top-0 z-50 w-full border-b border-[#392928] bg-background-dark/95 backdrop-blur-sm">
+<div class="max-w-5xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
+<div class="flex items-center gap-3 text-white hover:text-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-2xl group-hover:-translate-x-1 transition-transform">arrow_back</span>
+<h2 class="text-xl font-bold tracking-tight uppercase">My Routine</h2>
+</div>
+<button class="flex items-center justify-center rounded-xl h-9 px-5 bg-[#392928] hover:bg-[#4a3635] text-white text-sm font-bold tracking-wide transition-colors">
+                    Edit
+                </button>
+</div>
+</header>
+<!-- Content Area -->
+<main class="flex-1 w-full max-w-5xl mx-auto px-4 md:px-8 py-8">
+<div class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
+<!-- Left Column: Routine List -->
+<div class="flex flex-col gap-6">
+<!-- Tabs -->
+<div class="p-1 bg-[#271c1c] rounded-xl flex items-center justify-center w-full max-w-md mx-auto lg:mx-0">
+<button class="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-primary text-white shadow-md transition-all">
+<span class="material-symbols-outlined text-[20px]">wb_sunny</span>
+<span class="font-bold text-sm">Morning</span>
+</button>
+<button class="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg text-[#b99e9d] hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">bedtime</span>
+<span class="font-medium text-sm">Evening</span>
+</button>
+</div>
+<!-- Intro Text -->
+<div class="flex flex-col gap-1 mt-2">
+<h1 class="text-3xl font-bold text-white">Rise &amp; Shine.</h1>
+<p class="text-text-secondary text-base">Consistency is key. Don't skip the basics.</p>
+</div>
+<!-- Steps List -->
+<div class="flex flex-col gap-4">
+<!-- Step 1: Cleanser -->
+<div class="group relative flex flex-col sm:flex-row items-stretch gap-4 rounded-2xl bg-surface-dark p-4 shadow-lg border border-transparent hover:border-[#392928] transition-all">
+<!-- Checkbox/Status (Absolute for mobile, relative for desktop alignment) -->
+<div class="absolute top-4 right-4 sm:static sm:flex sm:items-center sm:pl-2">
+<button class="size-8 rounded-full border-2 border-[#392928] text-transparent hover:border-primary hover:text-primary flex items-center justify-center transition-all">
+<span class="material-symbols-outlined">check</span>
+</button>
+</div>
+<div class="flex flex-[2] flex-col justify-between gap-4">
+<div class="flex flex-col gap-1">
+<p class="text-white text-lg font-bold leading-tight flex items-center gap-2">
+<span class="text-primary">1.</span>
+<span>🧴 Cleanser</span>
+</p>
+<p class="text-text-secondary text-sm font-normal">La Roche-Posay Toleriane</p>
+</div>
+<button class="flex w-fit items-center gap-2 rounded-lg py-2 px-3 bg-[#392928] hover:bg-[#4a3635] text-white text-xs font-bold uppercase tracking-wider transition-colors">
+<span>View Product</span>
+<span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</button>
+</div>
+<div class="w-full sm:w-32 aspect-video sm:aspect-square bg-center bg-cover bg-no-repeat rounded-xl" data-alt="Minimalist white bottle of facial cleanser on a stone surface" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAVOIMF5BitV8n22aa-C_V_ItzFzB8_3nnaOnyLZdNH5ONZUiIGB8d_3SfdqiXhCPreyElhxtgky6Xk9SFzwRVx7bU0QHmG9TtbVy6TXboxiRGNQd4e0baIxpQYP6jk4VIE9JOnFa7RckEKsCsaIbeNAsmfvt4lx_KYtTcWshMGui7IiQQTSmBUr8udu0hgZPWhZSnMpplvKgeE6o-Hy2TOxcOJNqgRGwjXG_6jJKWMITP3AP-MTuWVaBCMknvJE5JF7BJrMjMP641r");'>
+</div>
+</div>
+<!-- Step 2: Vitamin C (Locked) -->
+<div class="relative overflow-hidden rounded-2xl bg-surface-dark p-4 shadow-lg border border-[#392928]/50">
+<!-- Blurred Content -->
+<div class="flex flex-col sm:flex-row items-stretch gap-4 opacity-40 blur-[2px] select-none pointer-events-none">
+<div class="hidden sm:flex sm:items-center sm:pl-2">
+<div class="size-8 rounded-full border-2 border-[#392928]"></div>
+</div>
+<div class="flex flex-[2] flex-col justify-between gap-4">
+<div class="flex flex-col gap-1">
+<p class="text-white text-lg font-bold leading-tight flex items-center gap-2">
+<span class="text-primary">2.</span>
+<span>🍊 Vitamin C</span>
+</p>
+<p class="text-text-secondary text-sm font-normal">Premium Antioxidant Serum</p>
+</div>
+<div class="h-8 w-24 bg-[#392928] rounded-lg"></div>
+</div>
+<div class="w-full sm:w-32 aspect-video sm:aspect-square bg-center bg-cover bg-no-repeat rounded-xl bg-gray-800"></div>
+</div>
+<!-- Overlay -->
+<div class="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[1px] text-center p-6">
+<span class="material-symbols-outlined text-3xl text-primary mb-2">lock</span>
+<h3 class="text-white font-bold text-lg mb-1">Don't be cheap.</h3>
+<p class="text-text-secondary text-sm mb-4 max-w-xs">Unlock this step and get that glow you've been chasing.</p>
+<button class="flex items-center gap-2 rounded-xl h-10 px-6 bg-primary hover:bg-red-600 text-white text-sm font-bold shadow-[0_0_15px_rgba(238,52,43,0.4)] transition-all transform hover:scale-105">
+                                    Unlock with Roast Pro
+                                </button>
+</div>
+</div>
+<!-- Step 3: Moisturizer -->
+<div class="group relative flex flex-col sm:flex-row items-stretch gap-4 rounded-2xl bg-surface-dark p-4 shadow-lg border border-transparent hover:border-[#392928] transition-all">
+<div class="absolute top-4 right-4 sm:static sm:flex sm:items-center sm:pl-2">
+<button class="size-8 rounded-full border-2 border-[#392928] text-transparent hover:border-primary hover:text-primary flex items-center justify-center transition-all">
+<span class="material-symbols-outlined">check</span>
+</button>
+</div>
+<div class="flex flex-[2] flex-col justify-between gap-4">
+<div class="flex flex-col gap-1">
+<p class="text-white text-lg font-bold leading-tight flex items-center gap-2">
+<span class="text-primary">3.</span>
+<span>💧 Moisturizer</span>
+</p>
+<p class="text-text-secondary text-sm font-normal">Neutrogena Hydro Boost</p>
+</div>
+<button class="flex w-fit items-center gap-2 rounded-lg py-2 px-3 bg-[#392928] hover:bg-[#4a3635] text-white text-xs font-bold uppercase tracking-wider transition-colors">
+<span>View Product</span>
+<span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</button>
+</div>
+<div class="w-full sm:w-32 aspect-video sm:aspect-square bg-center bg-cover bg-no-repeat rounded-xl" data-alt="Blue jar of hydro boost moisturizer water splash effect" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuABfWgQaTksXKp7JyCoHgGPjTNewfu0TEhr2eX791fUXkWJ3aLjALg-hOcUKXEllea974JSfLAu2eKJubgjFAPux2zKz3IkZ40aM2XkKhECZMX34-UElLXanNkAjslpzgPd7_RT8FtPW2bk6qI6mdymN7FqO8xVNMrS8so6IM2qYKDqNTQbdvPe15zUkuF7B8PUHScG1RbOaA7SvAlxtJ-DfNJVo_cRHMUQa8unN6dhYQK6IiZpx4Tr5lzEIHd9yWXYyJQxAlJmP4jk");'>
+</div>
+</div>
+<!-- Step 4: SPF -->
+<div class="group relative flex flex-col sm:flex-row items-stretch gap-4 rounded-2xl bg-surface-dark p-4 shadow-lg border border-transparent hover:border-[#392928] transition-all">
+<div class="absolute top-4 right-4 sm:static sm:flex sm:items-center sm:pl-2">
+<button class="size-8 rounded-full border-2 border-[#392928] text-transparent hover:border-primary hover:text-primary flex items-center justify-center transition-all">
+<span class="material-symbols-outlined">check</span>
+</button>
+</div>
+<div class="flex flex-[2] flex-col justify-between gap-4">
+<div class="flex flex-col gap-1">
+<p class="text-white text-lg font-bold leading-tight flex items-center gap-2">
+<span class="text-primary">4.</span>
+<span>☀️ SPF 50+</span>
+</p>
+<p class="text-text-secondary text-sm font-normal">EltaMD UV Clear</p>
+</div>
+<button class="flex w-fit items-center gap-2 rounded-lg py-2 px-3 bg-[#392928] hover:bg-[#4a3635] text-white text-xs font-bold uppercase tracking-wider transition-colors">
+<span>View Product</span>
+<span class="material-symbols-outlined text-[16px]">open_in_new</span>
+</button>
+</div>
+<div class="w-full sm:w-32 aspect-video sm:aspect-square bg-center bg-cover bg-no-repeat rounded-xl" data-alt="Sunscreen tube on a beach sand background" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCqOv2DBi7OlDig0CNSA_bJyvc8xz7ubEpjHDJzvA8k6GgxkvliKozWB8CT22044eao-GmQPja_4tPyGQeOnwtE3OydEwD6H8mHcJHk-atRcteegp5HyPICupAPzdnhZHekUdHazmCY56HRblYagLWIUqv44EV4lOhhfZiVVlCjd3fnMmqliGPgt24OFTLEZENfV0OLBTuDTfyNORVVwEcc7mdIGjZjSM7d6ga--ntKeaP99EPi1wQPahr0KkC5TJi3LbssQMMXsmtj");'>
+</div>
+</div>
+</div>
+<!-- Main Action -->
+<div class="mt-4 pb-8">
+<button class="w-full rounded-xl bg-primary hover:bg-red-600 text-white font-bold text-lg py-4 shadow-lg shadow-red-900/20 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">check_circle</span>
+                            Mark Routine Complete
+                        </button>
+</div>
+</div>
+<!-- Right Column: Stats & Tips (Desktop Enhancements) -->
+<div class="hidden lg:flex flex-col gap-6">
+<!-- Weekly Progress -->
+<div class="rounded-2xl bg-surface-dark p-6 border border-[#392928]">
+<h3 class="text-white font-bold text-lg mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">calendar_month</span>
+                            Weekly Streak
+                        </h3>
+<div class="flex justify-between items-end h-24 mb-2 px-2">
+<!-- Bars -->
+<div class="w-6 bg-primary rounded-t-lg h-[80%] opacity-100"></div>
+<div class="w-6 bg-primary rounded-t-lg h-[60%] opacity-80"></div>
+<div class="w-6 bg-primary rounded-t-lg h-[100%] opacity-100"></div>
+<div class="w-6 bg-primary rounded-t-lg h-[40%] opacity-60"></div>
+<div class="w-6 bg-primary rounded-t-lg h-[90%] opacity-100"></div>
+<div class="w-6 bg-[#392928] rounded-t-lg h-[10%]"></div>
+<div class="w-6 bg-[#392928] rounded-t-lg h-[10%]"></div>
+</div>
+<div class="flex justify-between text-xs text-text-secondary px-2">
+<span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+</div>
+<p class="text-center mt-4 text-sm font-medium text-white">4 day streak! 🔥</p>
+</div>
+<!-- Tip Card -->
+<div class="rounded-2xl bg-gradient-to-br from-[#271c1c] to-[#1e1313] p-6 border border-[#392928]">
+<div class="size-10 rounded-full bg-primary/20 text-primary flex items-center justify-center mb-4">
+<span class="material-symbols-outlined">lightbulb</span>
+</div>
+<h3 class="text-white font-bold text-lg mb-2">Pro Tip</h3>
+<p class="text-text-secondary text-sm leading-relaxed mb-4">
+                            Apply your Vitamin C serum on dry skin. Wet skin can dilute the potency and reduce absorption.
+                        </p>
+</div>
+<!-- Unlock Pro Promo Small -->
+<div class="rounded-2xl bg-[#392928]/30 border border-[#392928] p-4 flex items-center gap-3">
+<div class="size-10 bg-white rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-background-dark">lock_open</span>
+</div>
+<div>
+<p class="text-white text-sm font-bold">Unlock Roast Pro</p>
+<p class="text-text-secondary text-xs">Get full routine analysis.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

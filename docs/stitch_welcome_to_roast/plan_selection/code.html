@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ROAST - Plan Selection</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#f54238",
+              "primary-dark": "#d93a32",
+              "background-light": "#f8f6f5",
+              "background-dark": "#181111", // Deep roasted coffee bean color
+              "surface-dark": "#271c1b",
+              "surface-border": "#543c3b",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"],
+              "body": ["Noto Sans", "sans-serif"],
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem", 
+              "lg": "0.5rem", 
+              "xl": "0.75rem", 
+              "2xl": "1rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for high-end feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #181111;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #392928;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #543c3b;
+        }
+    </style>
+</head>
+<body class="bg-background-dark text-white overflow-x-hidden min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<header class="w-full flex justify-center border-b border-[#392928] bg-[#181111]/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex max-w-[960px] w-full items-center justify-between px-6 py-4">
+<div class="flex items-center gap-3 text-white">
+<div class="text-primary">
+<span class="material-symbols-outlined text-3xl">local_fire_department</span>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">ROAST</h2>
+</div>
+<!-- Simplified header for flow focus -->
+<div class="text-sm font-medium text-[#ba9d9c]">Step 2 of 3</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow flex flex-col items-center justify-center py-10 px-4 sm:px-6">
+<div class="max-w-[1024px] w-full flex flex-col gap-8">
+<!-- Heading Section -->
+<div class="flex flex-col gap-4 text-center items-center max-w-2xl mx-auto animate-fade-in-up">
+<h1 class="text-white text-4xl md:text-5xl font-black leading-[1.1] tracking-[-0.033em]">
+                    How hot do you want <br/>this roast?
+                </h1>
+<p class="text-[#ba9d9c] text-lg font-normal leading-relaxed max-w-lg">
+                    Choose your intensity. Honesty is our policy, but we let you pick the volume.
+                </p>
+</div>
+<!-- Bento Grid Pricing -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-4">
+<!-- Free Plan (Highlighted) -->
+<div class="group relative flex flex-col gap-6 rounded-2xl border-2 border-primary bg-[#271c1b] p-6 md:p-8 shadow-[0_0_30px_rgba(245,66,56,0.15)] transition-transform duration-300 hover:-translate-y-1">
+<!-- Absolute badge for selection -->
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-lg">
+                        Recommended Start
+                    </div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<h3 class="text-white text-xl font-bold">Free</h3>
+<span class="text-xs font-mono text-[#ba9d9c] uppercase tracking-widest">The Gentle Roast</span>
+</div>
+<div class="flex items-baseline gap-1 mt-2">
+<span class="text-white text-5xl font-black tracking-tighter">$0</span>
+<span class="text-[#ba9d9c] text-lg font-medium">/mo</span>
+</div>
+<p class="text-sm text-[#ba9d9c] mt-1">Perfect for thick skin.</p>
+</div>
+<ul class="flex flex-col gap-3 flex-grow">
+<li class="flex items-start gap-3 text-sm text-gray-200">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+<span>Basic skin scan analysis</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-200">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+<span>Daily roast reminder</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-200">
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+<span>Community access</span>
+</li>
+</ul>
+<button class="w-full h-12 rounded-xl bg-primary hover:bg-primary-dark text-white text-base font-bold transition-colors flex items-center justify-center gap-2 group-hover:shadow-lg shadow-primary/20">
+                        Start Free
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<!-- Pro Plan -->
+<div class="group relative flex flex-col gap-6 rounded-2xl border border-[#392928] bg-[#1a1212] p-6 md:p-8 hover:border-[#543c3b] transition-all duration-300 hover:bg-[#201616] hover:-translate-y-1">
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<h3 class="text-white text-xl font-bold">Pro</h3>
+<span class="text-xs font-mono text-[#ba9d9c] uppercase tracking-widest">Deep Burn</span>
+</div>
+<div class="flex items-baseline gap-1 mt-2">
+<span class="text-white text-5xl font-black tracking-tighter">$9.99</span>
+<span class="text-[#ba9d9c] text-lg font-medium">/mo</span>
+</div>
+<p class="text-sm text-[#ba9d9c] mt-1">For those who want results.</p>
+</div>
+<ul class="flex flex-col gap-3 flex-grow">
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-[#543c3b] group-hover:text-white transition-colors text-[20px]">check</span>
+<span>Unlimited scans</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-[#543c3b] group-hover:text-white transition-colors text-[20px]">check</span>
+<span>Routine builder</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-[#543c3b] group-hover:text-white transition-colors text-[20px]">check</span>
+<span>Ingredient analysis</span>
+</li>
+</ul>
+<button class="w-full h-12 rounded-xl border border-[#392928] bg-transparent hover:border-white hover:bg-white hover:text-black text-white text-base font-bold transition-all flex items-center justify-center">
+                        Start 7-Day Trial
+                    </button>
+</div>
+<!-- Premium Plan -->
+<div class="group relative flex flex-col gap-6 rounded-2xl border border-[#392928] bg-[#1a1212] p-6 md:p-8 hover:border-[#543c3b] transition-all duration-300 hover:bg-[#201616] hover:-translate-y-1">
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<h3 class="text-white text-xl font-bold">Premium</h3>
+<span class="text-xs font-mono text-[#ba9d9c] uppercase tracking-widest">Incineration</span>
+</div>
+<div class="flex items-baseline gap-1 mt-2">
+<span class="text-white text-5xl font-black tracking-tighter">$19.99</span>
+<span class="text-[#ba9d9c] text-lg font-medium">/mo</span>
+</div>
+<p class="text-sm text-[#ba9d9c] mt-1">Total transformation.</p>
+</div>
+<ul class="flex flex-col gap-3 flex-grow">
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-[#543c3b] group-hover:text-white transition-colors text-[20px]">check</span>
+<span>Dermatologist review</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-[#543c3b] group-hover:text-white transition-colors text-[20px]">check</span>
+<span>Priority support</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-300">
+<span class="material-symbols-outlined text-[#543c3b] group-hover:text-white transition-colors text-[20px]">check</span>
+<span>Exclusive content</span>
+</li>
+</ul>
+<button class="w-full h-12 rounded-xl border border-[#392928] bg-transparent hover:border-white hover:bg-white hover:text-black text-white text-base font-bold transition-all flex items-center justify-center">
+                        Start 7-Day Trial
+                    </button>
+</div>
+</div>
+<!-- Meta / Skip Link -->
+<div class="w-full flex justify-center pt-4">
+<a class="text-[#ba9d9c] text-sm font-medium hover:text-white hover:underline transition-colors opacity-70 hover:opacity-100" href="#">
+                    Maybe later
+                </a>
+</div>
+</div>
+</main>
+<!-- Background Pattern Effect (Abstract "Roast" Heat) -->
+<div aria-hidden="true" class="fixed inset-0 pointer-events-none z-[-1]" data-alt="Abstract dark red gradient background representing heat">
+<div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-primary/5 blur-[120px]"></div>
+<div class="absolute bottom-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-primary/5 blur-[100px]"></div>
+</div>
+</body></html>
