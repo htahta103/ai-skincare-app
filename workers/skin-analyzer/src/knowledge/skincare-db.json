@@ -1,0 +1,275 @@
+{
+    "knowledge_base": [
+        {
+            "id": "dehydration-001",
+            "condition": "Dehydration / Dry Skin",
+            "symptoms": [
+                "dull skin",
+                "fine lines",
+                "tightness",
+                "flaking"
+            ],
+            "severity_indicators": {
+                "mild": "slight dullness, minor tightness after cleansing",
+                "moderate": "visible fine lines, persistent tightness, some flaking",
+                "severe": "deep lines, extreme tightness, significant flaking, redness"
+            },
+            "recommendations": [
+                "Drink at least 8 glasses of water daily",
+                "Use a hyaluronic acid serum to attract moisture",
+                "Apply a rich, cream-based moisturizer twice daily",
+                "Avoid hot showers which strip natural oils",
+                "Use a humidifier in dry environments"
+            ],
+            "products": [
+                "The Ordinary Hyaluronic Acid 2% + B5",
+                "CeraVe Moisturizing Cream",
+                "La Roche-Posay Toleriane Double Repair Face Moisturizer",
+                "Neutrogena Hydro Boost Water Gel"
+            ],
+            "roast_templates": [
+                "Your skin's thirstier than a cactus in the Sahara. Time to hydrate!",
+                "I've seen raisins with better moisture levels.",
+                "Your skin barrier's screaming for water louder than I scream for coffee.",
+                "Dehydrated? More like desperately parched. Drink up!"
+            ]
+        },
+        {
+            "id": "enlarged-pores-001",
+            "condition": "Enlarged Pores",
+            "symptoms": [
+                "visible pores",
+                "oily t-zone",
+                "rough texture",
+                "blackheads"
+            ],
+            "severity_indicators": {
+                "mild": "slightly visible pores in t-zone",
+                "moderate": "clearly visible pores, occasional blackheads",
+                "severe": "very large pores across face, persistent blackheads, congestion"
+            },
+            "recommendations": [
+                "Use a niacinamide serum to help minimize pores",
+                "Try a weekly clay mask to deep clean",
+                "Use a BHA (salicylic acid) exfoliant 2-3x per week",
+                "Always wear SPF—UV damage enlarges pores",
+                "Avoid heavy, pore-clogging products"
+            ],
+            "products": [
+                "The Ordinary Niacinamide 10% + Zinc 1%",
+                "Paula's Choice 2% BHA Liquid Exfoliant",
+                "COSRX BHA Blackhead Power Liquid",
+                "Aztec Secret Indian Healing Clay"
+            ],
+            "roast_templates": [
+                "Your pores called—they want their own ZIP code.",
+                "I've seen craters smaller than those pores.",
+                "Those pores are so big I can see your skincare regrets.",
+                "Your T-zone's producing more oil than a deep fryer."
+            ]
+        },
+        {
+            "id": "rough-texture-001",
+            "condition": "Rough Skin Texture",
+            "symptoms": [
+                "bumpy skin",
+                "uneven surface",
+                "dull appearance",
+                "dead skin buildup"
+            ],
+            "severity_indicators": {
+                "mild": "slightly bumpy texture, minimal dullness",
+                "moderate": "noticeably rough patches, obvious dullness",
+                "severe": "very rough texture, significant dead skin buildup, sandpaper feel"
+            },
+            "recommendations": [
+                "Exfoliate 2-3 times per week (chemical preferred over physical)",
+                "Use an AHA exfoliant for surface smoothing",
+                "Consider adding retinol to your routine",
+                "Keep skin well-moisturized",
+                "Be gentle—over-exfoliation makes it worse"
+            ],
+            "products": [
+                "Paula's Choice 8% AHA Gel Exfoliant",
+                "The Ordinary Retinol 0.5% in Squalane",
+                "CosRX AHA/BHA Clarifying Treatment Toner",
+                "Glow Recipe Watermelon Glow PHA + BHA Pore-Tight Toner"
+            ],
+            "roast_templates": [
+                "I've seen pizza crusts with better texture. Exfoliate much?",
+                "That texture's rougher than a gravel road.",
+                "Your skin's got more bumps than a cobblestone street.",
+                "Smooth? That's opposite of what we're working with here."
+            ]
+        },
+        {
+            "id": "uneven-tone-001",
+            "condition": "Uneven Skin Tone / Hyperpigmentation",
+            "symptoms": [
+                "dark spots",
+                "redness",
+                "discoloration",
+                "post-acne marks"
+            ],
+            "severity_indicators": {
+                "mild": "slight discoloration, minor redness",
+                "moderate": "noticeable dark spots, uneven patches",
+                "severe": "significant hyperpigmentation, melasma, very uneven tone"
+            },
+            "recommendations": [
+                "Use vitamin C serum daily for brightening",
+                "Apply sunscreen SPF 30+ every single day",
+                "Consider niacinamide for evening skin tone",
+                "Try retinol or retinoids (start slow)",
+                "Be patient—tone correction takes months"
+            ],
+            "products": [
+                "The Ordinary Vitamin C Suspension 23% + HA Spheres 2%",
+                "Paula's Choice Clinical Niacinamide 20% Treatment",
+                "La Roche-Posay Mela-D Pigment Control Glycolic Acid Serum",
+                "EltaMD UV Clear Broad-Spectrum SPF 46"
+            ],
+            "roast_templates": [
+                "Your skin tone's more uneven than my WiFi signal.",
+                "That pigmentation's playing connect-the-dots on your face.",
+                "Uneven doesn't even begin to describe this mosaic.",
+                "SPF exists for a reason. Use it."
+            ]
+        },
+        {
+            "id": "oily-skin-001",
+            "condition": "Excessive Oiliness",
+            "symptoms": [
+                "shiny skin",
+                "midday greasiness",
+                "makeup sliding off",
+                "enlarged pores"
+            ],
+            "severity_indicators": {
+                "mild": "slight shine by midday in t-zone",
+                "moderate": "noticeable oil within hours, frequent blotting needed",
+                "severe": "extremely greasy throughout day, makeup won't stay, persistent shine"
+            },
+            "recommendations": [
+                "Use oil-free, non-comedogenic products",
+                "Try a gentle BHA exfoliant to control oil",
+                "Use blotting papers instead of washing too often",
+                "Lightweight gel moisturizers still necessary",
+                "Clay masks 1-2x weekly can help"
+            ],
+            "products": [
+                "The Ordinary Niacinamide 10% + Zinc 1%",
+                "Neutrogena Hydro Boost Water Gel (oil-free)",
+                "Paula's Choice CLEAR Regular Strength Daily Skin Clearing Treatment",
+                "Bioré Charcoal Pore Minimizer"
+            ],
+            "roast_templates": [
+                "That glow? Yeah, that's just oil. Blotting papers exist for a reason.",
+                "Your face produces more oil than Saudi Arabia.",
+                "I could fry an egg on that T-zone.",
+                "Dewy? No, that's straight-up grease."
+            ]
+        },
+        {
+            "id": "sensitive-skin-001",
+            "condition": "Skin Sensitivity / Irritation",
+            "symptoms": [
+                "redness",
+                "burning",
+                "itching",
+                "reactive to products"
+            ],
+            "severity_indicators": {
+                "mild": "occasional redness, slight sensitivity",
+                "moderate": "frequent reactions, persistent redness",
+                "severe": "constant irritation, painful reactions, rosacea-like symptoms"
+            },
+            "recommendations": [
+                "Patch test all new products",
+                "Avoid fragrances and harsh ingredients",
+                "Use gentle, pH-balanced cleansers",
+                "Look for soothing ingredients like centella, aloe",
+                "Simplify your routine—less is more"
+            ],
+            "products": [
+                "La Roche-Posay Toleriane Hydrating Gentle Cleanser",
+                "CeraVe Hydrating Facial Cleanser",
+                "The Ordinary Squalane Cleanser",
+                "Avène Thermal Spring Water Spray"
+            ],
+            "roast_templates": [
+                "Your skin's more sensitive than my feelings on Monday mornings.",
+                "That barrier's weaker than my excuses for not working out.",
+                "One ingredient away from a full meltdown, huh?",
+                "Your face and harsh products need a restraining order."
+            ]
+        },
+        {
+            "id": "aging-signs-001",
+            "condition": "Signs of Aging / Fine Lines",
+            "symptoms": [
+                "fine lines",
+                "wrinkles",
+                "loss of elasticity",
+                "sagging"
+            ],
+            "severity_indicators": {
+                "mild": "fine lines around eyes when smiling",
+                "moderate": "visible lines at rest, decreased firmness",
+                "severe": "deep wrinkles, significant sagging, loss of volume"
+            },
+            "recommendations": [
+                "Start using retinol or prescription retinoids",
+                "SPF 30+ every day (non-negotiable)",
+                "Vitamin C serum for collagen support",
+                "Peptide serums for firmness",
+                "Stay hydrated and get enough sleep"
+            ],
+            "products": [
+                "The Ordinary Retinol 1% in Squalane",
+                "Paula's Choice Clinical Ceramide-Enriched Firming Eye Cream",
+                "The INKEY List Retinol Serum",
+                "Olay Regenerist Micro-Sculpting Cream"
+            ],
+            "roast_templates": [
+                "Those lines are telling stories your age won't admit.",
+                "Sunscreen isn't optional unless you're auditioning for a raisin commercial.",
+                "Father Time's been working overtime on that face.",
+                "SPF 30+. Every. Single. Day. Non-negotiable."
+            ]
+        },
+        {
+            "id": "healthy-maintenance-001",
+            "condition": "Healthy Skin Maintenance",
+            "symptoms": [
+                "generally good condition",
+                "minor concerns",
+                "preventive care"
+            ],
+            "severity_indicators": {
+                "mild": "excellent skin health",
+                "moderate": "mostly healthy with minor improvements possible",
+                "severe": "not applicable"
+            },
+            "recommendations": [
+                "Maintain current routine consistently",
+                "Always wear SPF 30+ sunscreen",
+                "Stay well-hydrated (8+ glasses water)",
+                "Get 7-8 hours sleep for skin repair",
+                "Eat antioxidant-rich foods"
+            ],
+            "products": [
+                "CeraVe AM Facial Moisturizing Lotion SPF 30",
+                "Neutrogena Hydro Boost Water Gel",
+                "Cetaphil Daily Facial Cleanser",
+                "The Ordinary Natural Moisturizing Factors + HA"
+            ],
+            "roast_templates": [
+                "Not bad, but there's always room for improvement.",
+                "You're doing okay. Don't get cocky.",
+                "Decent glow, but don't skip that SPF.",
+                "Looking good. Keep it up, or don't—your choice."
+            ]
+        }
+    ]
+}

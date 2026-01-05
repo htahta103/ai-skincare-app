@@ -9,17 +9,58 @@ import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { uploadAndAnalyzeScan } from "./actions";
 
 export default function CameraScanPage() {
   const router = useRouter();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [faceDetected, setFaceDetected] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Mock face detection
   useEffect(() => {
     const timer = setTimeout(() => setFaceDetected(true), 2000);
     return () => clearTimeout(timer);
   }, []);
+
+  const handleGalleryClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setUploadError('Please select an image file');
+      return;
+    }
+
+    setIsAnalyzing(true);
+    setUploadError(null);
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const result = await uploadAndAnalyzeScan(formData);
+      
+      if (result.error) {
+        setUploadError(result.error);
+        setIsAnalyzing(false);
+      } else if (result.success && result.scanId) {
+        // Navigate to results after a short delay
+        setTimeout(() => {
+          router.push('/scan/results');
+        }, 2000);
+      }
+    } catch (error) {
+      setUploadError('Failed to process image');
+      setIsAnalyzing(false);
+    }
+  };
 
   const handleCapture = () => {
     setIsAnalyzing(true);
@@ -124,6 +165,41 @@ export default function CameraScanPage() {
         </div>
       </div>
 
+      {/* Error Popup */}
+      <AnimatePresence>
+        {uploadError && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-[#1C1C1E] border border-white/10 rounded-3xl p-6 w-full max-w-sm flex flex-col items-center text-center gap-4 shadow-2xl"
+            >
+              <div className="size-12 rounded-full bg-red-500/10 flex items-center justify-center mb-2">
+                <Icon icon={X} className="text-red-500" size={24} />
+              </div>
+              
+              <div className="space-y-2">
+                <Typography variant="headline" weight="bold">Scan Failed</Typography>
+                <Typography className="text-white/60 text-sm">
+                  {uploadError}
+                </Typography>
+              </div>
+
+              <Button 
+                onClick={() => {
+                  setUploadError(null);
+                  setIsAnalyzing(false);
+                }}
+                className="w-full bg-white text-black hover:bg-white/90 rounded-full h-12 mt-2"
+              >
+                Try Again
+              </Button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* Bottom Controls */}
       <div className="p-8 flex flex-col gap-6 bg-black z-30">
         <div className="flex items-center justify-center gap-6">
@@ -144,13 +220,26 @@ export default function CameraScanPage() {
                 faceDetected ? "bg-primary" : "bg-white/10"
               )} />
            </button>
-           <div className="flex flex-col items-center gap-1 opacity-40">
+           <button
+             onClick={handleGalleryClick}
+             disabled={isAnalyzing}
+             className="flex flex-col items-center gap-1 opacity-60 hover:opacity-100 transition-opacity disabled:opacity-20"
+           >
               <Icon icon={Camera} size={24} />
               <Typography className="text-[10px] uppercase font-bold">Gallery</Typography>
-           </div>
+           </button>
         </div>
         <Typography variant="caption" className="text-center opacity-40">Position your face within the frame</Typography>
       </div>
+
+      {/* Hidden file input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFileSelect}
+      />
     </div>
   );
 }

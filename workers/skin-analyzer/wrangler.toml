@@ -1,0 +1,23 @@
+name = "skin-analyzer"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+[ai]
+binding = "AI"
+
+[[kv_namespaces]]
+binding = "CACHE"
+id = "fe758b90c48041c8bb26c8a7ecc16c4e"
+
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "skincare-knowledge"
+# Run: wrangler vectorize create skincare-knowledge --dimensions=768 --metric=cosine
+
+[vars]
+# Environment variables (use `wrangler secret put` for secrets)
+SUPABASE_URL = "https://ntbqjbmitptpcftnxavi.supabase.co"
+SUPABASE_SERVICE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im50YnFqYm1pdHB0cGNmdG54YXZpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NzQwNzU0MSwiZXhwIjoyMDgyOTgzNTQxfQ.Cgen2xpsmo2N-3iWlEFAJiSb78faHBa2cEY7vJ3I4AY"
+# Secrets (set via `wrangler secret put <NAME>`):
+# - WORKER_SECRET: Legacy secret for Edge Function calls
+# - SUPABASE_JWT_SECRET: From Supabase Dashboard > Settings > API > JWT Secret

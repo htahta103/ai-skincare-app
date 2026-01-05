@@ -44,12 +44,13 @@ export const PageWrapper = ({ children, className }: PageWrapperProps) => {
   );
 };
 
-export const FadeInItem = ({ children, className }: { children: ReactNode; className?: string }) => (
+export const FadeInItem = ({ children, className, delay = 0 }: { children: ReactNode; className?: string; delay?: number }) => (
   <motion.div
     variants={{
       initial: { opacity: 0, y: 20 },
       animate: { opacity: 1, y: 0 }
     }}
+    transition={{ delay }}
     className={className}
   >
     {children}

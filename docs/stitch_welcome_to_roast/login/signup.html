@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Create Account - ROAST</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ee342b",
+                        "primary-hover": "#d62f27",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221110",
+                        "text-main": "#181111",
+                        "text-muted": "#896361",
+                        "border-color": "#e6dcdb",
+                        "success": "#22c55e"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, rgba(238, 52, 43, 0.05) 0%, rgba(238, 52, 43, 0.02) 100%);
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            10%,
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: translateX(-4px);
+            }
+
+            20%,
+            40%,
+            60%,
+            80% {
+                transform: translateX(4px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes checkmark {
+            0% {
+                stroke-dashoffset: 100;
+            }
+
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .checkmark-animate {
+            animation: checkmark 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-white dark:bg-background-dark text-text-main antialiased min-h-screen flex flex-col relative overflow-x-hidden">
+    <!-- Header -->
+    <header
+        class="w-full border-b border-solid border-border-color bg-white dark:bg-background-dark dark:border-[#3a2e2e] sticky top-0 z-50">
+        <div class="max-w-[1280px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2 cursor-pointer">
+                <div class="text-primary">
+                    <svg fill="none" height="32" viewBox="0 0 48 48" width="32" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"
+                            fill="currentColor" />
+                        <path clip-rule="evenodd"
+                            d="M39.998 35.764C39.9944 35.7463 39.9875 35.7155 39.9748 35.6706C39.9436 35.5601 39.8949 35.4259 39.8346 35.2825C39.8168 35.2403 39.7989 35.1993 39.7813 35.1602C38.5103 34.2887 35.9788 33.0607 33.7095 32.5189C30.9875 31.8691 27.6413 31.4783 24 31.4783C20.3587 31.4783 17.0125 31.8691 14.2905 32.5189C12.0012 33.0654 9.44505 34.3104 8.18538 35.1832C8.17384 35.2075 8.16216 35.233 8.15052 35.2592C8.09919 35.3751 8.05721 35.4886 8.02977 35.589C8.00356 35.6848 8.00039 35.7333 8.00004 35.7388C8.00004 35.739 8 35.7393 8.00004 35.7388C8.00004 35.7641 8.0104 36.0767 8.68485 36.6314C9.34546 37.1746 10.4222 37.7531 11.9291 38.2772C14.9242 39.319 19.1919 40 24 40C28.8081 40 33.0758 39.319 36.0709 38.2772C37.5778 37.7531 38.6545 37.1746 39.3151 36.6314C39.9006 36.1499 39.9857 35.8511 39.998 35.764ZM4.95178 32.7688L21.4543 6.30267C22.6288 4.4191 25.3712 4.41909 26.5457 6.30267L43.0534 32.777C43.0709 32.8052 43.0878 32.8338 43.104 32.8629L41.3563 33.8352C43.104 32.8629 43.1038 32.8626 43.104 32.8629L43.1051 32.865L43.1065 32.8675L43.1101 32.8739L43.1199 32.8918C43.1276 32.906 43.1377 32.9246 43.1497 32.9473C43.1738 32.9925 43.2062 33.0545 43.244 33.1299C43.319 33.2792 43.4196 33.489 43.5217 33.7317C43.6901 34.1321 44 34.9311 44 35.7391C44 37.4427 43.003 38.7775 41.8558 39.7209C40.6947 40.6757 39.1354 41.4464 37.385 42.0552C33.8654 43.2794 29.133 44 24 44C18.867 44 14.1346 43.2794 10.615 42.0552C8.86463 41.4464 7.30529 40.6757 6.14419 39.7209C4.99695 38.7775 3.99999 37.4427 3.99999 35.7391C3.99999 34.8725 4.29264 34.0922 4.49321 33.6393C4.60375 33.3898 4.71348 33.1804 4.79687 33.0311C4.83898 32.9556 4.87547 32.8935 4.9035 32.8471C4.91754 32.8238 4.92954 32.8043 4.93916 32.7889L4.94662 32.777L4.95178 32.7688ZM35.9868 29.004L24 9.77997L12.0131 29.004C12.4661 28.8609 12.9179 28.7342 13.3617 28.6282C16.4281 27.8961 20.0901 27.4783 24 27.4783C27.9099 27.4783 31.5719 27.8961 34.6383 28.6282C35.082 28.7342 35.5339 28.8609 35.9868 29.004Z"
+                            fill="currentColor" fill-rule="evenodd" />
+                    </svg>
+                </div>
+                <h2 class="text-text-main dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">ROAST
+                </h2>
+            </a>
+            <div class="flex items-center gap-2 sm:gap-4">
+                <span class="hidden sm:block text-sm text-text-muted font-medium">Already have an account?</span>
+                <a href="login.html"
+                    class="flex items-center justify-center overflow-hidden rounded-lg h-9 px-3 sm:px-4 bg-transparent border border-border-color text-text-main hover:bg-background-light dark:hover:bg-[#2d1b1a] dark:text-white dark:border-[#554443] transition-colors text-sm font-bold leading-normal">
+                    <span class="truncate">Log in</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center py-8 sm:py-10 px-4 sm:px-6 lg:px-8 gradient-bg">
+        <div class="w-full max-w-[440px] flex flex-col gap-5 sm:gap-6">
+
+            <!-- Signup Form Section -->
+            <div id="signupSection">
+                <!-- Title -->
+                <div class="flex flex-col gap-2 text-center pb-4">
+                    <h1
+                        class="text-text-main dark:text-white text-2xl sm:text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">
+                        Join the ROAST fam 🔥
+                    </h1>
+                    <p class="text-text-muted text-sm sm:text-base font-normal leading-normal">
+                        Create your account and start your skincare journey.
+                    </p>
+                </div>
+
+                <!-- Google Auth Button -->
+                <div class="flex flex-col gap-3 mb-4">
+                    <button id="googleBtn" type="button"
+                        class="relative flex w-full items-center justify-center rounded-lg border border-border-color dark:border-[#3a2e2e] bg-white dark:bg-[#2a1a19] px-4 py-3 text-sm sm:text-base font-bold text-text-main dark:text-white shadow-sm hover:bg-background-light dark:hover:bg-[#332221] transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed">
+                        <svg class="h-5 w-5 absolute left-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                                fill="#4285F4" />
+                            <path
+                                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                                fill="#34A853" />
+                            <path
+                                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                                fill="#FBBC05" />
+                            <path
+                                d="M12 4.63c1.69 0 3.26.58 4.54 1.8l3.29-3.29C17.9 1.25 15.22 0 12 0 7.7 0 3.99 2.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                                fill="#EA4335" />
+                        </svg>
+                        <span id="googleBtnText">Continue with Google</span>
+                    </button>
+                </div>
+
+                <!-- Divider -->
+                <div class="relative flex items-center justify-center py-1 mb-4">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-border-color dark:border-[#3a2e2e]"></div>
+                    </div>
+                    <div class="relative bg-white dark:bg-background-dark px-3 text-sm font-medium text-text-muted">
+                        or
+                    </div>
+                </div>
+
+                <!-- Signup Form -->
+                <form id="signupForm" class="flex flex-col gap-4" novalidate>
+                    <label class="flex flex-col gap-1.5">
+                        <p class="text-text-main dark:text-white text-sm sm:text-base font-medium leading-normal">Full
+                            Name</p>
+                        <input id="fullName" name="fullName"
+                            class="form-input flex w-full min-w-0 resize-none overflow-hidden rounded-lg text-text-main dark:text-white placeholder:text-text-muted border border-border-color dark:border-[#3a2e2e] bg-white dark:bg-[#2a1a19] h-11 sm:h-12 px-4 text-sm sm:text-base font-normal leading-normal focus:outline-0 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                            placeholder="Enter your name" type="text" required autocomplete="name" />
+                    </label>
+                    <label class="flex flex-col gap-1.5">
+                        <p class="text-text-main dark:text-white text-sm sm:text-base font-medium leading-normal">Email
+                            Address</p>
+                        <input id="email" name="email"
+                            class="form-input flex w-full min-w-0 resize-none overflow-hidden rounded-lg text-text-main dark:text-white placeholder:text-text-muted border border-border-color dark:border-[#3a2e2e] bg-white dark:bg-[#2a1a19] h-11 sm:h-12 px-4 text-sm sm:text-base font-normal leading-normal focus:outline-0 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                            placeholder="name@example.com" type="email" required autocomplete="email" />
+                    </label>
+                    <div class="flex flex-col gap-1.5">
+                        <p class="text-text-main dark:text-white text-sm sm:text-base font-medium leading-normal">
+                            Password</p>
+                        <div class="relative">
+                            <input id="password" name="password"
+                                class="form-input flex w-full min-w-0 resize-none overflow-hidden rounded-lg text-text-main dark:text-white placeholder:text-text-muted border border-border-color dark:border-[#3a2e2e] bg-white dark:bg-[#2a1a19] h-11 sm:h-12 px-4 pr-12 text-sm sm:text-base font-normal leading-normal focus:outline-0 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                                placeholder="Create a password" type="password" required minlength="8"
+                                autocomplete="new-password" />
+                            <button type="button" onclick="togglePassword('password', this)"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-main dark:hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">visibility</span>
+                            </button>
+                        </div>
+                        <div id="passwordStrength" class="flex gap-1 mt-1">
+                            <div class="h-1 flex-1 rounded-full bg-border-color transition-colors"></div>
+                            <div class="h-1 flex-1 rounded-full bg-border-color transition-colors"></div>
+                            <div class="h-1 flex-1 rounded-full bg-border-color transition-colors"></div>
+                            <div class="h-1 flex-1 rounded-full bg-border-color transition-colors"></div>
+                        </div>
+                        <p id="passwordHint" class="text-text-muted text-xs mt-1">Must be at least 8 characters</p>
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <p class="text-text-main dark:text-white text-sm sm:text-base font-medium leading-normal">
+                            Confirm Password</p>
+                        <div class="relative">
+                            <input id="confirmPassword" name="confirmPassword"
+                                class="form-input flex w-full min-w-0 resize-none overflow-hidden rounded-lg text-text-main dark:text-white placeholder:text-text-muted border border-border-color dark:border-[#3a2e2e] bg-white dark:bg-[#2a1a19] h-11 sm:h-12 px-4 pr-12 text-sm sm:text-base font-normal leading-normal focus:outline-0 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                                placeholder="Confirm your password" type="password" required
+                                autocomplete="new-password" />
+                            <button type="button" onclick="togglePassword('confirmPassword', this)"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-main dark:hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+                    <button id="signupBtn" type="submit"
+                        class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 sm:h-12 px-4 bg-primary hover:bg-primary-hover text-white text-sm sm:text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-primary/20 transition-all active:scale-[0.98] mt-2 disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100">
+                        <span id="signupBtnText">Create Account</span>
+                    </button>
+                </form>
+
+                <!-- Terms -->
+                <div class="text-center pt-4">
+                    <p class="text-text-muted text-xs sm:text-sm">
+                        By creating an account, you agree to our
+                        <a class="text-text-main dark:text-white font-medium hover:underline" href="#">Terms</a> and
+                        <a class="text-text-main dark:text-white font-medium hover:underline" href="#">Privacy
+                            Policy</a>.
+                    </p>
+                </div>
+
+                <!-- Mobile login link -->
+                <div class="sm:hidden text-center pt-4 border-t border-border-color dark:border-[#3a2e2e] mt-4">
+                    <p class="text-text-muted text-sm pt-4">
+                        Already have an account?
+                        <a class="text-primary font-bold hover:underline" href="login.html">Log in</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Email Confirmation Section (hidden by default) -->
+            <div id="confirmationSection" class="hidden flex flex-col gap-5 sm:gap-6">
+                <!-- Success Icon -->
+                <div class="flex justify-center">
+                    <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-success/10 flex items-center justify-center">
+                        <svg class="w-10 h-10 sm:w-12 sm:h-12 text-success" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path class="checkmark-animate" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="M5 13l4 4L19 7" stroke-dasharray="100" stroke-dashoffset="100" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Title -->
+                <div class="flex flex-col gap-2 text-center">
+                    <h1
+                        class="text-text-main dark:text-white text-2xl sm:text-3xl font-black leading-tight tracking-[-0.033em]">
+                        Check your inbox! 📬
+                    </h1>
+                    <p class="text-text-muted text-sm sm:text-base font-normal leading-normal">
+                        We've sent a confirmation link to<br />
+                        <span id="sentEmail" class="text-text-main dark:text-white font-medium"></span>
+                    </p>
+                </div>
+
+                <!-- Instructions -->
+                <div
+                    class="bg-background-light dark:bg-[#2a1a19] rounded-lg p-4 border border-border-color dark:border-[#3a2e2e]">
+                    <div class="flex gap-3">
+                        <span class="material-symbols-outlined text-primary text-[24px] mt-0.5">mail</span>
+                        <div class="flex flex-col gap-2">
+                            <p class="text-text-main dark:text-white text-sm font-medium">Next steps:</p>
+                            <ol class="text-text-muted text-xs sm:text-sm list-decimal list-inside space-y-1">
+                                <li>Open the email we just sent you</li>
+                                <li>Click the confirmation link</li>
+                                <li>Start your skincare journey!</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex flex-col gap-3">
+                    <a href="login.html"
+                        class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 sm:h-12 px-4 bg-primary hover:bg-primary-hover text-white text-sm sm:text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
+                        <span>Go to Login</span>
+                    </a>
+                    <button id="resendBtn" type="button" onclick="resendConfirmation()"
+                        class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 sm:h-12 px-4 bg-transparent border border-border-color text-text-main hover:bg-background-light dark:hover:bg-[#2d1b1a] dark:text-white dark:border-[#554443] transition-colors text-sm sm:text-base font-bold leading-normal disabled:opacity-60 disabled:cursor-not-allowed">
+                        <span id="resendBtnText">Resend confirmation email</span>
+                    </button>
+                </div>
+
+                <!-- Help text -->
+                <div class="text-center pt-2">
+                    <p class="text-text-muted text-xs sm:text-sm">
+                        Didn't receive it? Check your spam folder or
+                        <button onclick="showSignupSection()" class="text-primary font-medium hover:underline">try a
+                            different email</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Auth Utils Script -->
+    <script src="auth-utils.js"></script>
+
+    <script>
+        let registeredEmail = '';
+
+        // Toggle password visibility
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('span');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        }
+
+        // Set loading state for buttons
+        function setLoading(btn, textEl, isLoading, originalText) {
+            if (isLoading) {
+                btn.disabled = true;
+                textEl.innerHTML = `
+                    <svg class="animate-spin h-5 w-5 inline-block mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Please wait...
+                `;
+            } else {
+                btn.disabled = false;
+                textEl.textContent = originalText;
+            }
+        }
+
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]+/)) strength++;
+            if (password.match(/[A-Z]+/)) strength++;
+            if (password.match(/[0-9]+/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]+/)) strength++;
+            return Math.min(strength, 4);
+        }
+
+        function updatePasswordStrength(password) {
+            const bars = document.querySelectorAll('#passwordStrength > div');
+            const hint = document.getElementById('passwordHint');
+            const strength = checkPasswordStrength(password);
+
+            const colors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-green-500'];
+            const hints = ['Weak password', 'Fair password', 'Good password', 'Strong password!'];
+
+            bars.forEach((bar, i) => {
+                bar.className = 'h-1 flex-1 rounded-full transition-colors';
+                if (i < strength) {
+                    bar.classList.add(colors[Math.min(strength - 1, 3)]);
+                } else {
+                    bar.classList.add('bg-border-color');
+                }
+            });
+
+            if (password.length > 0) {
+                hint.textContent = hints[Math.min(strength - 1, 3)] || 'Must be at least 8 characters';
+                hint.className = `text-xs mt-1 ${strength >= 3 ? 'text-green-600' : strength >= 2 ? 'text-yellow-600' : 'text-red-600'}`;
+            } else {
+                hint.textContent = 'Must be at least 8 characters';
+                hint.className = 'text-text-muted text-xs mt-1';
+            }
+        }
+
+        function showConfirmationSection(email) {
+            document.getElementById('signupSection').classList.add('hidden');
+            document.getElementById('confirmationSection').classList.remove('hidden');
+            document.getElementById('sentEmail').textContent = email;
+            registeredEmail = email;
+        }
+
+        function showSignupSection() {
+            document.getElementById('signupSection').classList.remove('hidden');
+            document.getElementById('confirmationSection').classList.add('hidden');
+        }
+
+        async function resendConfirmation() {
+            const { showToast, ToastType, getSupabase, getUserFriendlyError } = window.ROAST_AUTH;
+            const resendBtn = document.getElementById('resendBtn');
+            const resendBtnText = document.getElementById('resendBtnText');
+
+            if (!registeredEmail) {
+                showToast('Please sign up first', ToastType.ERROR);
+                return;
+            }
+
+            setLoading(resendBtn, resendBtnText, true, 'Resend confirmation email');
+
+            try {
+                const sb = getSupabase();
+                const { error } = await sb.auth.resend({
+                    type: 'signup',
+                    email: registeredEmail
+                });
+
+                if (error) throw error;
+
+                showToast('Confirmation email sent! Check your inbox.', ToastType.SUCCESS);
+            } catch (error) {
+                const friendlyMessage = getUserFriendlyError(error);
+                showToast(friendlyMessage, ToastType.ERROR);
+            } finally {
+                setLoading(resendBtn, resendBtnText, false, 'Resend confirmation email');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { showToast, ToastType, handleSignup, handleGoogleLogin, getUserFriendlyError } = window.ROAST_AUTH;
+
+            const signupForm = document.getElementById('signupForm');
+            const signupBtn = document.getElementById('signupBtn');
+            const signupBtnText = document.getElementById('signupBtnText');
+            const googleBtn = document.getElementById('googleBtn');
+            const googleBtnText = document.getElementById('googleBtnText');
+            const fullNameInput = document.getElementById('fullName');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+
+            // Password strength indicator
+            passwordInput.addEventListener('input', () => {
+                updatePasswordStrength(passwordInput.value);
+            });
+
+            // Handle form submission
+            signupForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const fullName = fullNameInput.value.trim();
+                const email = emailInput.value.trim();
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+
+                // Client-side validation
+                if (!fullName) {
+                    showToast('Please enter your name', ToastType.ERROR);
+                    fullNameInput.focus();
+                    return;
+                }
+
+                if (!email) {
+                    showToast('Please enter your email address', ToastType.ERROR);
+                    emailInput.focus();
+                    return;
+                }
+
+                if (password.length < 8) {
+                    showToast('Password must be at least 8 characters', ToastType.ERROR);
+                    passwordInput.focus();
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    showToast('Passwords do not match', ToastType.ERROR);
+                    confirmPasswordInput.focus();
+                    confirmPasswordInput.classList.add('shake', 'border-red-500');
+                    setTimeout(() => confirmPasswordInput.classList.remove('shake'), 500);
+                    return;
+                }
+
+                // Disable form
+                setLoading(signupBtn, signupBtnText, true, 'Create Account');
+                fullNameInput.disabled = true;
+                emailInput.disabled = true;
+                passwordInput.disabled = true;
+                confirmPasswordInput.disabled = true;
+                googleBtn.disabled = true;
+
+                try {
+                    const result = await handleSignup(email, password, fullName);
+
+                    if (result.needsEmailConfirmation) {
+                        showToast('🎉 Account created! Please check your email.', ToastType.SUCCESS);
+                        showConfirmationSection(email);
+                    } else {
+                        showToast('🔥 Welcome to ROAST! Redirecting...', ToastType.SUCCESS);
+                        setTimeout(() => {
+                            window.location.href = '/onboarding';
+                        }, 1000);
+                    }
+
+                } catch (error) {
+                    console.error('Signup error:', error);
+                    const friendlyMessage = getUserFriendlyError(error);
+                    showToast(friendlyMessage, ToastType.ERROR, 6000);
+
+                    // Re-enable form
+                    setLoading(signupBtn, signupBtnText, false, 'Create Account');
+                    fullNameInput.disabled = false;
+                    emailInput.disabled = false;
+                    passwordInput.disabled = false;
+                    confirmPasswordInput.disabled = false;
+                    googleBtn.disabled = false;
+
+                    signupForm.classList.add('shake');
+                    setTimeout(() => signupForm.classList.remove('shake'), 500);
+                }
+            });
+
+            // Handle Google OAuth
+            googleBtn.addEventListener('click', async () => {
+                setLoading(googleBtn, googleBtnText, true, 'Continue with Google');
+                signupBtn.disabled = true;
+                fullNameInput.disabled = true;
+                emailInput.disabled = true;
+                passwordInput.disabled = true;
+                confirmPasswordInput.disabled = true;
+
+                try {
+                    await handleGoogleLogin();
+                } catch (error) {
+                    console.error('Google signup error:', error);
+                    const friendlyMessage = getUserFriendlyError(error);
+                    showToast(friendlyMessage, ToastType.ERROR);
+
+                    setLoading(googleBtn, googleBtnText, false, 'Continue with Google');
+                    signupBtn.disabled = false;
+                    fullNameInput.disabled = false;
+                    emailInput.disabled = false;
+                    passwordInput.disabled = false;
+                    confirmPasswordInput.disabled = false;
+                }
+            });
+
+            // Clear validation styling on input
+            [fullNameInput, emailInput, passwordInput, confirmPasswordInput].forEach(input => {
+                input.addEventListener('input', () => {
+                    input.classList.remove('shake', 'border-red-500');
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
