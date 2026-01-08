@@ -6,10 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Typography } from "@/components/ui/typography";
 import { Card } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
-import { ArrowLeft, Check, Camera, Sparkles } from "lucide-react";
+import { ArrowLeft, Check, Camera, Sparkles, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { saveSkinProfile, generateUserRoutine } from "./actions";
 
 const QUIZ_STEPS = [
   {
@@ -56,6 +57,7 @@ const QUIZ_STEPS = [
 export default function OnboardingQuiz() {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleOptionSelect = (value: string) => {
@@ -72,11 +74,34 @@ export default function OnboardingQuiz() {
     }
   };
 
-  const nextStep = () => {
+  const nextStep = async () => {
     if (currentStep < QUIZ_STEPS.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      router.push("/onboarding/selfie");
+      // Quiz complete - save profile and generate routine
+      setIsLoading(true);
+      
+      try {
+        // Save skin profile
+        const profileResult = await saveSkinProfile({
+          skinType: answers["skin-type"] as string,
+          skinConcerns: answers["concerns"] as string[],
+          skinGoals: answers["goals"] as string[]
+        });
+
+        if (profileResult.error) {
+          console.error('Failed to save profile:', profileResult.error);
+        }
+
+        // Generate routine in background
+        generateUserRoutine().catch(console.error);
+
+        // Navigate to selfie (or dashboard)
+        router.push("/onboarding/selfie");
+      } catch (error) {
+        console.error('Error during quiz completion:', error);
+        router.push("/onboarding/selfie");
+      }
     }
   };
 
@@ -167,9 +192,16 @@ export default function OnboardingQuiz() {
           <Button 
             size="lg" 
             onClick={nextStep}
-            disabled={!(answers[currentQuizData.id] as string[])?.length}
+            disabled={!(answers[currentQuizData.id] as string[])?.length || isLoading}
           >
-            Continue
+            {isLoading ? (
+              <>
+                <Icon icon={Loader2} className="mr-2 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              'Continue'
+            )}
           </Button>
         )}
       </div>

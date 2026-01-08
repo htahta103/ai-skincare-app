@@ -28,7 +28,7 @@ export default async function ScanResultsPage() {
 
   return (
     <ResultsClient 
-      latestScan={latestScan} 
+      latestScan={latestScan as any} 
       profile={profile}
       email={user.email}
     />

@@ -118,7 +118,7 @@ export function ResultsClient({ latestScan, profile, email }: ResultsClientProps
     return (
       <PageWrapper className="flex flex-col items-center justify-center min-h-screen bg-background text-white p-6">
         <div className="text-center">
-          <Typography variant="h2" className="mb-4">No Scan Found</Typography>
+          <Typography variant="headline" className="mb-4">No Scan Found</Typography>
           <Typography className="opacity-60 mb-6">Take a scan first to see your results</Typography>
           <Link href="/scan">
             <Button>Start Scan</Button>
@@ -194,7 +194,7 @@ export function ResultsClient({ latestScan, profile, email }: ResultsClientProps
                       {getScoreLabel(glowScore)}
                     </Typography>
                   </div>
-                  <Typography variant="body2" className="opacity-70 leading-relaxed">
+                  <Typography variant="body" className="opacity-70 leading-relaxed">
                     {glowScore >= 80 
                       ? "Your skin is looking radiant! Keep up the great routine."
                       : glowScore >= 60
@@ -215,7 +215,7 @@ export function ResultsClient({ latestScan, profile, email }: ResultsClientProps
                   <Icon icon={Zap} size={18} className="text-white" />
                 </div>
                 <div>
-                  <Typography weight="bold" variant="body2" className="mb-1">RoastBot says:</Typography>
+                  <Typography weight="bold" variant="body" className="mb-1">RoastBot says:</Typography>
                   <Typography className="text-sm opacity-80 italic">"{roastMessage}"</Typography>
                 </div>
               </div>
@@ -242,7 +242,7 @@ export function ResultsClient({ latestScan, profile, email }: ResultsClientProps
                         <div className={cn("p-2 rounded-lg", config.bgColor)}>
                           <Icon icon={config.icon} size={16} className={config.textColor} />
                         </div>
-                        <Typography weight="medium" variant="body2">{config.label}</Typography>
+                        <Typography weight="medium" variant="body">{config.label}</Typography>
                       </div>
                       
                       {/* Progress Bar */}
@@ -292,7 +292,7 @@ export function ResultsClient({ latestScan, profile, email }: ResultsClientProps
                     <div className="size-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0 mt-0.5">
                       <Typography weight="bold" variant="caption">{idx + 1}</Typography>
                     </div>
-                    <Typography variant="body2" className="opacity-80">{rec}</Typography>
+                    <Typography variant="body" className="opacity-80">{rec}</Typography>
                   </div>
                 ))}
               </Card>
@@ -319,7 +319,7 @@ export function ResultsClient({ latestScan, profile, email }: ResultsClientProps
                     <div className="size-12 rounded-lg bg-gradient-to-br from-pink-500/20 to-purple-500/20 flex items-center justify-center mb-3">
                       <Icon icon={Sparkles} size={20} className="text-pink-400" />
                     </div>
-                    <Typography weight="medium" variant="body2" className="line-clamp-2">
+                    <Typography weight="medium" variant="body" className="line-clamp-2">
                       {product}
                     </Typography>
                   </Card>
@@ -339,7 +339,7 @@ export function ResultsClient({ latestScan, profile, email }: ResultsClientProps
                     </div>
                     <div>
                       <Typography weight="bold" className="text-lg">View Your Routine</Typography>
-                      <Typography variant="body2" className="opacity-70">
+                      <Typography variant="body" className="opacity-70">
                         Personalized morning & evening steps
                       </Typography>
                     </div>

@@ -29,7 +29,7 @@ export default async function ProgressPage() {
   return (
     <ProgressClient 
       progressPhotos={progressPhotos || []}
-      skinScans={skinScans || []}
+      skinScans={(skinScans || []) as any}
       supabaseUrl={process.env.NEXT_PUBLIC_SUPABASE_URL || ''}
     />
   )

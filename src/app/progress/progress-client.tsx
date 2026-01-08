@@ -426,7 +426,7 @@ export function ProgressClient({ progressPhotos, skinScans, supabaseUrl }: Progr
           </button>
 
           <div className="max-w-4xl w-full">
-            <Typography variant="h2" weight="bold" className="text-center mb-8">Before & After</Typography>
+            <Typography variant="headline" weight="bold" className="text-center mb-8">Before & After</Typography>
             
             <div className="grid grid-cols-2 gap-6">
               {/* Before */}
