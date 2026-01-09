@@ -4,6 +4,7 @@ import { analyzeWithVision } from './agents/vision-agent';
 import { queryRAG } from './agents/rag-agent';
 import { calculateGlowScore } from './agents/scoring-agent';
 import { generateRoast } from './agents/roast-agent';
+import { generateRoutine } from './agents/routine-agent';
 import { checkAndConsumeQuota, checkQuota } from './utils/quota-manager';
 import { recordSupabaseUsage } from './utils/supabase-usage';
 import jwt from '@tsndr/cloudflare-worker-jwt';
@@ -28,15 +29,15 @@ async function verifySupabaseToken(token: string, secret: string): Promise<{ sub
     }
 }
 
+// CORS headers
+const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
 export default {
     async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-        // CORS headers
-        const corsHeaders = {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        };
-
         // Handle CORS preflight
         if (request.method === 'OPTIONS') {
             return new Response(null, { headers: corsHeaders });
@@ -51,8 +52,6 @@ export default {
         }
 
         try {
-            const startTime = Date.now();
-
             // === AUTHENTICATION ===
             const authHeader = request.headers.get('Authorization');
             if (!authHeader?.startsWith('Bearer ')) {
@@ -65,18 +64,17 @@ export default {
             const token = authHeader.replace('Bearer ', '');
             let userId: string | null = null;
 
-            // Strategy 1: Legacy - Check if it's the Worker Secret (from Edge Function)
+            // Strategy 1: Legacy - Check if it's the Worker Secret
             if (token === env.WORKER_SECRET || token === 'debug-bypass') {
-                // Legacy path: user_id comes from request body
                 const body = await request.clone().json() as { user_id?: string };
                 userId = body.user_id || null;
                 console.log('[Auth] Legacy auth (Worker Secret)');
             }
-            // Strategy 2: New - Verify as Supabase JWT (direct from client)
+            // Strategy 2: Verify as Supabase JWT
             else if (env.SUPABASE_JWT_SECRET) {
                 const claims = await verifySupabaseToken(token, env.SUPABASE_JWT_SECRET);
                 if (claims) {
-                    userId = claims.sub; // user_id from JWT
+                    userId = claims.sub;
                     console.log('[Auth] JWT verified, user:', userId);
                 }
             }
@@ -88,145 +86,15 @@ export default {
                 });
             }
 
-            // Parse request body
-            const body = await request.json() as {
-                image_url: string;
-                user_id?: string; // Optional now (can come from JWT)
-                scan_id: string;
-            };
+            // Route based on URL path
+            const url = new URL(request.url);
+            const path = url.pathname;
 
-            if (!body.image_url || !body.scan_id) {
-                return new Response(JSON.stringify({ error: 'Missing required fields' }), {
-                    status: 400,
-                    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-                });
+            if (path === '/generate-routine' || path.endsWith('/generate-routine')) {
+                return await handleGenerateRoutine(request, env, userId);
+            } else {
+                return await handleAnalyzeScan(request, env, ctx, userId);
             }
-
-            // Check quota (pre-flight, actual consumption happens after image hash)
-            const preCheck = await checkQuota(env, userId);
-            if (!preCheck.allowed) {
-                return new Response(JSON.stringify({
-                    error: 'Quota exceeded',
-                    message: 'Daily scan limit reached. Try again tomorrow.'
-                }), {
-                    status: 429,
-                    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-                });
-            }
-
-            // Fetch image from Supabase
-            console.log('[Worker] Fetching image from:', body.image_url);
-            const imageResponse = await fetch(body.image_url);
-            if (!imageResponse.ok) {
-                console.error('[Worker] Image fetch failed:', imageResponse.status);
-                throw new Error('Failed to fetch image');
-            }
-            const imageBuffer = await imageResponse.arrayBuffer();
-            console.log('[Worker] Image buffer size:', imageBuffer.byteLength, 'bytes');
-
-            // Optimize image
-            const optimizedImage = await optimizeImage(imageBuffer);
-            const imageHash = await getImageHash(optimizedImage);
-            console.log('[Worker] Image hash:', imageHash);
-
-            // Cache enabled for production - user-specific to ensure privacy
-            const CACHE_ENABLED = true;
-            const cacheKey = `analysis:${userId}:${imageHash}`;
-
-            if (CACHE_ENABLED) {
-                const cached = await env.CACHE.get(cacheKey, 'json');
-                if (cached) {
-                    console.log('[Worker] Cache hit for user:', userId, 'image:', imageHash.substring(0, 8));
-                    // Cache hit doesn't consume quota (already paid for)
-                    return new Response(JSON.stringify({
-                        ...cached,
-                        cache_hit: true,
-                        processing_time_ms: Date.now() - startTime
-                    }), {
-                        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-                    });
-                }
-            }
-
-            // Atomically consume quota BEFORE expensive AI processing
-            // This prevents race conditions with concurrent uploads
-            const quotaResult = await checkAndConsumeQuota(env, userId);
-            if (!quotaResult.allowed) {
-                return new Response(JSON.stringify({
-                    error: 'Quota exceeded',
-                    message: 'Daily scan limit reached. Try again tomorrow.'
-                }), {
-                    status: 429,
-                    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-                });
-            }
-            console.log('[Worker] Quota consumed, remaining:', quotaResult.quota_remaining);
-
-            // PHASE 1: Vision Analysis
-            console.log('[Worker] PHASE 1: Running vision analysis...');
-            const visionMetrics = await analyzeWithVision(env, optimizedImage);
-            console.log('[Worker] Vision metrics:', JSON.stringify(visionMetrics));
-
-            // PHASE 2: RAG Query
-            console.log('Querying RAG knowledge base...');
-            const ragContext = await queryRAG(env, visionMetrics);
-
-            // PHASE 3: Calculate Glow Score
-            console.log('Calculating glow score...');
-            const glowScore = calculateGlowScore(visionMetrics);
-
-            // PHASE 4: Generate Roast
-            console.log('Generating roast message...');
-            const roastMessage = await generateRoast(env, visionMetrics, ragContext);
-
-            // Build response
-            const result = {
-                glow_score: glowScore.overall,
-                analysis_summary: {
-                    hydration: {
-                        score: visionMetrics.hydration.score,
-                        severity: glowScore.categories.hydration.severity,
-                        description: ragContext.find(r => r.condition.includes('Hydration'))?.condition || 'Normal hydration'
-                    },
-                    texture: {
-                        score: visionMetrics.texture.score,
-                        severity: glowScore.categories.texture.severity,
-                        description: 'Skin texture analysis'
-                    },
-                    tone: {
-                        score: visionMetrics.tone.score,
-                        severity: glowScore.categories.tone.severity,
-                        description: 'Skin tone uniformity'
-                    },
-                    pores: {
-                        score: visionMetrics.pores.score,
-                        severity: glowScore.categories.pores.severity,
-                        description: ragContext.find(r => r.condition.includes('Pore'))?.condition || 'Normal pore size'
-                    }
-                },
-                roast_message: roastMessage,
-                recommendations: ragContext.flatMap(r => r.recommendations).slice(0, 5),
-                product_suggestions: ragContext.flatMap(r => r.products).slice(0, 3),
-                processing_time_ms: Date.now() - startTime,
-                cache_hit: false
-            };
-
-            // Cache result and record to Supabase in background (non-blocking)
-            // Note: KV quota already consumed atomically above
-            ctx.waitUntil(
-                Promise.all([
-                    // Cache result in KV
-                    env.CACHE.put(cacheKey, JSON.stringify(result), {
-                        expirationTtl: 86400 // 24 hours
-                    }),
-                    // Record usage to Supabase for persistent tracking & subscription sync
-                    recordSupabaseUsage(env, userId)
-                ]).catch(err => console.error('[Worker] Background task error:', err))
-            );
-
-            return new Response(JSON.stringify(result), {
-                headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-            });
 
         } catch (error: any) {
             console.error('Worker error:', error);
@@ -240,3 +108,229 @@ export default {
         }
     }
 };
+
+// ============================================
+// Handler: /generate-routine
+// ============================================
+async function handleGenerateRoutine(
+    request: Request,
+    env: Env,
+    userId: string
+): Promise<Response> {
+    const startTime = Date.now();
+
+    try {
+        const body = await request.json() as {
+            skin_type?: string;
+            skin_concerns?: string[];
+            skin_goals?: string[];
+        };
+
+        // Fetch skin profile from Supabase if not provided
+        let skinProfile = {
+            skin_type: body.skin_type || '',
+            skin_concerns: body.skin_concerns || [],
+            skin_goals: body.skin_goals || []
+        };
+
+        if (!skinProfile.skin_type) {
+            const profileRes = await fetch(
+                `${env.SUPABASE_URL}/rest/v1/skin_profiles?user_id=eq.${userId}&select=skin_type,skin_concerns,skin_goals&limit=1`,
+                {
+                    headers: {
+                        'apikey': env.SUPABASE_SERVICE_KEY,
+                        'Authorization': `Bearer ${env.SUPABASE_SERVICE_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+
+            if (profileRes.ok) {
+                const profiles = await profileRes.json() as Array<{
+                    skin_type: string;
+                    skin_concerns: string[];
+                    skin_goals: string[];
+                }>;
+                if (profiles.length > 0) {
+                    skinProfile = profiles[0];
+                }
+            }
+        }
+
+        if (!skinProfile.skin_type) {
+            return new Response(JSON.stringify({
+                error: 'No skin profile found',
+                message: 'Complete the skin quiz first to generate a personalized routine.'
+            }), {
+                status: 400,
+                headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+            });
+        }
+
+        // Generate routine
+        const routineIds = await generateRoutine(env, userId, skinProfile);
+
+        return new Response(JSON.stringify({
+            success: true,
+            routines: routineIds,
+            processing_time_ms: Date.now() - startTime
+        }), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+
+    } catch (error: any) {
+        console.error('[GenerateRoutine] Error:', error);
+        return new Response(JSON.stringify({
+            error: 'Failed to generate routine',
+            message: error.message
+        }), {
+            status: 500,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+    }
+}
+
+// ============================================
+// Handler: Analyze Scan (default)
+// ============================================
+async function handleAnalyzeScan(
+    request: Request,
+    env: Env,
+    ctx: ExecutionContext,
+    userId: string
+): Promise<Response> {
+    const startTime = Date.now();
+
+    // Parse request body
+    const body = await request.json() as {
+        image_url: string;
+        user_id?: string;
+        scan_id: string;
+    };
+
+    if (!body.image_url || !body.scan_id) {
+        return new Response(JSON.stringify({ error: 'Missing required fields' }), {
+            status: 400,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+    }
+
+    // Check quota
+    const preCheck = await checkQuota(env, userId);
+    if (!preCheck.allowed) {
+        return new Response(JSON.stringify({
+            error: 'Quota exceeded',
+            message: 'Daily scan limit reached. Try again tomorrow.'
+        }), {
+            status: 429,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+    }
+
+    // Fetch image from Supabase
+    console.log('[Worker] Fetching image from:', body.image_url);
+    const imageResponse = await fetch(body.image_url);
+    if (!imageResponse.ok) {
+        console.error('[Worker] Image fetch failed:', imageResponse.status);
+        throw new Error('Failed to fetch image');
+    }
+    const imageBuffer = await imageResponse.arrayBuffer();
+    console.log('[Worker] Image buffer size:', imageBuffer.byteLength, 'bytes');
+
+    // Optimize image
+    const optimizedImage = await optimizeImage(imageBuffer);
+    const imageHash = await getImageHash(optimizedImage);
+    console.log('[Worker] Image hash:', imageHash);
+
+    // Cache
+    const CACHE_ENABLED = true;
+    const cacheKey = `analysis:${userId}:${imageHash}`;
+
+    if (CACHE_ENABLED) {
+        const cached = await env.CACHE.get(cacheKey, 'json');
+        if (cached) {
+            console.log('[Worker] Cache hit');
+            return new Response(JSON.stringify({
+                ...cached,
+                cache_hit: true,
+                processing_time_ms: Date.now() - startTime
+            }), {
+                headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+            });
+        }
+    }
+
+    // Consume quota
+    const quotaResult = await checkAndConsumeQuota(env, userId);
+    if (!quotaResult.allowed) {
+        return new Response(JSON.stringify({
+            error: 'Quota exceeded',
+            message: 'Daily scan limit reached. Try again tomorrow.'
+        }), {
+            status: 429,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
+    }
+    console.log('[Worker] Quota consumed, remaining:', quotaResult.quota_remaining);
+
+    // PHASE 1: Vision Analysis
+    console.log('[Worker] PHASE 1: Running vision analysis...');
+    const visionMetrics = await analyzeWithVision(env, optimizedImage);
+    console.log('[Worker] Vision metrics:', JSON.stringify(visionMetrics));
+
+    // PHASE 2: RAG Query
+    console.log('Querying RAG knowledge base...');
+    const ragContext = await queryRAG(env, visionMetrics);
+
+    // PHASE 3: Calculate Glow Score
+    console.log('Calculating glow score...');
+    const glowScore = calculateGlowScore(visionMetrics);
+
+    // PHASE 4: Generate Roast
+    console.log('Generating roast message...');
+    const roastMessage = await generateRoast(env, visionMetrics, ragContext);
+
+    // Build response
+    const result = {
+        glow_score: glowScore.overall,
+        analysis_summary: {
+            hydration: {
+                score: visionMetrics.hydration.score,
+                severity: glowScore.categories.hydration.severity,
+                description: ragContext.find(r => r.condition.includes('Hydration'))?.condition || 'Normal hydration'
+            },
+            texture: {
+                score: visionMetrics.texture.score,
+                severity: glowScore.categories.texture.severity,
+                description: 'Skin texture analysis'
+            },
+            tone: {
+                score: visionMetrics.tone.score,
+                severity: glowScore.categories.tone.severity,
+                description: 'Skin tone uniformity'
+            },
+            pores: {
+                score: visionMetrics.pores.score,
+                severity: glowScore.categories.pores.severity,
+                description: ragContext.find(r => r.condition.includes('Pore'))?.condition || 'Normal pore size'
+            }
+        },
+        roast_message: roastMessage,
+        recommendations: ragContext.flatMap(r => r.recommendations).slice(0, 5),
+        product_suggestions: ragContext.flatMap(r => r.products).slice(0, 3),
+        processing_time_ms: Date.now() - startTime,
+        cache_hit: false
+    };
+
+    // Cache result and record usage in background
+    ctx.waitUntil(
+        Promise.all([
+            env.CACHE.put(cacheKey, JSON.stringify(result), { expirationTtl: 86400 }),
+            recordSupabaseUsage(env, userId)
+        ]).catch(err => console.error('[Worker] Background task error:', err))
+    );
+
+    return new Response(JSON.stringify(result), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+}

@@ -5,12 +5,13 @@ import { Typography } from "@/components/ui/typography";
 import { Card } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
-import { Sun, Moon, CheckCircle2, Circle, Lock } from "lucide-react";
-import { useState } from "react";
+import { Sun, Moon, CheckCircle2, Circle, Lock, RefreshCw, ExternalLink, Loader2, Sparkles } from "lucide-react";
+import { useState, useTransition } from "react";
 import { Navigation } from "@/components/layout/navigation";
 import { PageWrapper, FadeInItem } from "@/components/layout/page-wrapper";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { regenerateRoutine } from "./actions";
 
 interface RoutineStep {
   id: string;
@@ -20,6 +21,7 @@ interface RoutineStep {
   product?: {
     name: string;
     brand: string | null;
+    affiliate_url: string | null;
   } | null;
 }
 
@@ -39,22 +41,25 @@ interface RoutineClientProps {
 
 // Fallback mock data when no routine exists
 const FALLBACK_MORNING: RoutineStep[] = [
-  { id: '1', step_order: 1, step_type: "Cleanser", instructions: null, product: { name: "CeraVe Gentle Cleanser", brand: "CeraVe" } },
-  { id: '2', step_order: 2, step_type: "Toner", instructions: null, product: { name: "Klairs Hydrating Toner", brand: "Dear, Klairs" } },
-  { id: '3', step_order: 3, step_type: "Serum", instructions: null, product: { name: "Niacinamide 10% + Zinc", brand: "The Ordinary" } },
-  { id: '4', step_order: 4, step_type: "Moisturizer", instructions: null, product: { name: "CeraVe PM Lotion", brand: "CeraVe" } },
-  { id: '5', step_order: 5, step_type: "Sunscreen", instructions: null, product: { name: "EltaMD UV Clear SPF 46", brand: "EltaMD" } },
+  { id: '1', step_order: 1, step_type: "Cleanser", instructions: null, product: { name: "CeraVe Gentle Cleanser", brand: "CeraVe", affiliate_url: null } },
+  { id: '2', step_order: 2, step_type: "Toner", instructions: null, product: { name: "Klairs Hydrating Toner", brand: "Dear, Klairs", affiliate_url: null } },
+  { id: '3', step_order: 3, step_type: "Serum", instructions: null, product: { name: "Niacinamide 10% + Zinc", brand: "The Ordinary", affiliate_url: null } },
+  { id: '4', step_order: 4, step_type: "Moisturizer", instructions: null, product: { name: "CeraVe PM Lotion", brand: "CeraVe", affiliate_url: null } },
+  { id: '5', step_order: 5, step_type: "Sunscreen", instructions: null, product: { name: "EltaMD UV Clear SPF 46", brand: "EltaMD", affiliate_url: null } },
 ];
 
 const FALLBACK_EVENING: RoutineStep[] = [
-  { id: '6', step_order: 1, step_type: "Oil Cleanser", instructions: null, product: { name: "Anua Heartleaf Oil", brand: "Anua" } },
-  { id: '7', step_order: 2, step_type: "Cleanser", instructions: null, product: { name: "CeraVe Gentle Cleanser", brand: "CeraVe" } },
-  { id: '8', step_order: 3, step_type: "Treatment", instructions: null, product: { name: "Retinol 0.5% in Squalane", brand: "The Ordinary" } },
+  { id: '6', step_order: 1, step_type: "Oil Cleanser", instructions: null, product: { name: "Anua Heartleaf Oil", brand: "Anua", affiliate_url: null } },
+  { id: '7', step_order: 2, step_type: "Cleanser", instructions: null, product: { name: "CeraVe Gentle Cleanser", brand: "CeraVe", affiliate_url: null } },
+  { id: '8', step_order: 3, step_type: "Treatment", instructions: null, product: { name: "Retinol 0.5% in Squalane", brand: "The Ordinary", affiliate_url: null } },
 ];
 
 export function RoutineClient({ morningRoutine, eveningRoutine, hasSubscription }: RoutineClientProps) {
   const [activeTab, setActiveTab] = useState<"morning" | "evening">("morning");
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  const [isPending, startTransition] = useTransition();
+
+  const hasCustomRoutine = morningRoutine?.routine_steps?.length || eveningRoutine?.routine_steps?.length;
 
   const morningSteps = Array.isArray(morningRoutine?.routine_steps) && morningRoutine.routine_steps.length 
     ? morningRoutine.routine_steps 
@@ -84,13 +89,40 @@ export function RoutineClient({ morningRoutine, eveningRoutine, hasSubscription 
     setCompletedSteps(new Set(allIds));
   };
 
+  const handleRegenerate = () => {
+    startTransition(async () => {
+      const result = await regenerateRoutine();
+      if (result.error) {
+        console.error('Regenerate failed:', result.error);
+      }
+    });
+  };
+
   return (
     <PageWrapper className="min-h-screen bg-background text-foreground pb-32 transition-colors duration-300">
       <header className="px-6 py-6 border-b border-white/5 sticky top-0 bg-background/80 backdrop-blur-xl z-30">
-        <div className="max-w-2xl mx-auto w-full">
+        <div className="max-w-2xl mx-auto w-full flex items-center justify-between">
           <FadeInItem>
             <Typography as="h1" variant="headline" weight="bold">My Routine</Typography>
-            <Typography variant="caption" className="opacity-60 italic">"Try to stick to it this time, maybe?"</Typography>
+            <Typography variant="caption" className="opacity-60 italic">
+              {hasCustomRoutine ? "Personalized for your skin" : "\"Try to stick to it this time, maybe?\""}
+            </Typography>
+          </FadeInItem>
+          <FadeInItem>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleRegenerate}
+              disabled={isPending}
+              className="gap-2"
+            >
+              {isPending ? (
+                <Icon icon={Loader2} size={16} className="animate-spin" />
+              ) : (
+                <Icon icon={RefreshCw} size={16} />
+              )}
+              <span className="hidden sm:inline">{isPending ? 'Generating...' : 'Regenerate'}</span>
+            </Button>
           </FadeInItem>
         </div>
       </header>
@@ -123,8 +155,8 @@ export function RoutineClient({ morningRoutine, eveningRoutine, hasSubscription 
         </FadeInItem>
 
         {/* Routine Steps */}
-        <div className="flex flex-col gap-4">
-          {routine.map((step, i) => {
+        <div key={activeTab} className="flex flex-col gap-4">
+          {routine.map((step) => {
             const isDone = completedSteps.has(step.id);
             const isLocked = isEveningLocked;
             
@@ -150,9 +182,23 @@ export function RoutineClient({ morningRoutine, eveningRoutine, hasSubscription 
                         <Typography weight="bold" className="truncate text-foreground">
                           {step.product?.name || step.instructions || step.step_type}
                         </Typography>
-                        {step.product?.brand && (
-                          <Typography className="text-xs opacity-40">{step.product.brand}</Typography>
-                        )}
+                        <div className="flex items-center gap-2">
+                          {step.product?.brand && (
+                            <Typography className="text-xs opacity-40">{step.product.brand}</Typography>
+                          )}
+                          {step.product?.affiliate_url && !isLocked && (
+                            <a 
+                              href={step.product.affiliate_url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <Icon icon={ExternalLink} size={10} />
+                              Shop
+                            </a>
+                          )}
+                        </div>
                      </div>
                   </div>
                   

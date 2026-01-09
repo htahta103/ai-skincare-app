@@ -40,3 +40,40 @@ export async function markAllComplete(routineId: string) {
     revalidatePath('/routine')
     return { success: true }
 }
+
+export async function regenerateRoutine() {
+    const supabase = await createClient()
+    const { data: { session } } = await supabase.auth.getSession()
+
+    if (!session) {
+        return { error: 'Not authenticated' }
+    }
+
+    try {
+        const workerUrl = process.env.NEXT_PUBLIC_WORKER_URL || 'https://skin-analyzer.roast-skin.workers.dev'
+
+        const response = await fetch(
+            `${workerUrl}/generate-routine`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.access_token}`
+                },
+                body: JSON.stringify({})
+            }
+        )
+
+        if (!response.ok) {
+            const errorData = await response.json()
+            console.error('Routine regeneration error:', errorData)
+            return { error: errorData.message || 'Failed to regenerate routine' }
+        }
+
+        revalidatePath('/routine')
+        return { success: true }
+    } catch (error) {
+        console.error('Error regenerating routine:', error)
+        return { error: 'Failed to regenerate routine' }
+    }
+}

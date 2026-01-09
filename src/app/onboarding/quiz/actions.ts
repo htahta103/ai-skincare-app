@@ -43,23 +43,25 @@ export async function saveSkinProfile(data: SkinProfileData) {
 
 export async function generateUserRoutine() {
     const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
+    const { data: { session } } = await supabase.auth.getSession()
 
-    if (!user) {
+    if (!session) {
         return { error: 'Not authenticated' }
     }
 
-    // Call the generate-routine Edge Function
+    // Call the Cloudflare Worker's generate-routine endpoint
     try {
+        const workerUrl = process.env.NEXT_PUBLIC_WORKER_URL || 'https://skin-analyzer.roast-skin.workers.dev'
+
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/generate-routine`,
+            `${workerUrl}/generate-routine`,
             {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`
+                    'Authorization': `Bearer ${session.access_token}`
                 },
-                body: JSON.stringify({ user_id: user.id })
+                body: JSON.stringify({})
             }
         )
 

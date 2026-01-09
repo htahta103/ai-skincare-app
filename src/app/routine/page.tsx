@@ -24,7 +24,8 @@ export default async function RoutinePage() {
         instructions,
         product:products (
           name,
-          brand
+          brand,
+          affiliate_url
         )
       )
     `)
@@ -49,7 +50,8 @@ export default async function RoutinePage() {
         instructions,
         product:products (
           name,
-          brand
+          brand,
+          affiliate_url
         )
       )
     `)
