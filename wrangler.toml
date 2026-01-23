@@ -1,0 +1,12 @@
+# Cloudflare Pages configuration
+# This file configures the Cloudflare Worker for Next.js on Pages
+
+name = "ai-skincare-app"
+compatibility_date = "2024-01-01"
+
+# Enable Node.js compatibility for built-in modules like node:buffer and node:async_hooks
+# This is required to avoid runtime errors with Node.js built-in modules
+compatibility_flags = ["nodejs_compat"]
+
+# Note: Build command is typically configured in Cloudflare Pages dashboard
+# The build command should be: npm run build && npx @cloudflare/next-on-pages@1
