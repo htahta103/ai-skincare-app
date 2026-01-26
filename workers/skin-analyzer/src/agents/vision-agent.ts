@@ -22,29 +22,36 @@ export async function analyzeWithVision(
 
         console.log('[Vision Agent] Processed image data length:', imageData.length);
 
-        const prompt = `You are a professional dermatologist AI assistant. Carefully analyze this facial skin image.
+        const prompt = `You are a board-certified dermatologist AI. Analyze this facial skin image with CLINICAL PRECISION.
 
-Examine the following skin characteristics in detail:
+CRITICAL: Look carefully for these SKIN PROBLEMS:
+- Acne, pimples, pustules, papules, cysts
+- Redness, inflammation, irritation  
+- Dark spots, hyperpigmentation, sun damage
+- Visible pores, blackheads, whiteheads
+- Dry patches, flakiness, dehydration lines
+- Uneven texture, bumps, scarring
 
-1. **PORES**: Look at pore size, visibility, congestion, blackheads, and overall pore health
-2. **TEXTURE**: Analyze skin smoothness, roughness, fine lines, bumps, acne, scarring
-3. **TONE**: Evaluate skin color uniformity, dark spots, hyperpigmentation, redness, blemishes
-4. **HYDRATION**: Assess moisture level, dryness, oiliness, dehydration lines
+SCORING RULES (0-100 scale):
+- 90-100: FLAWLESS skin, virtually no issues visible
+- 75-89: Minor issues only (1-2 small blemishes)
+- 60-74: MODERATE issues (multiple blemishes, some redness, visible pores)
+- 40-59: SIGNIFICANT problems (active acne, noticeable scarring, uneven tone)
+- 0-39: SEVERE issues (cystic acne, extensive scarring, major concerns)
 
-For each category, provide a score from 0-100 where:
-- 90-100: Excellent/flawless (GIVE THIS SCORE IF SKIN LOOKS PERFECT OR NEAR PERFECT)
-- 75-89: Good with minor concerns
-- 60-74: Moderate issues requiring attention
-- 40-59: Significant concerns
-- 0-39: Severe issues
+⚠️ IMPORTANT PENALTIES:
+- If you see ANY acne/pimples → texture score MUST be 74 or lower
+- If you see redness/inflammation → tone score MUST be 74 or lower  
+- If skin looks oily OR dry → hydration score MUST be 74 or lower
+- If pores are clearly visible → pores score MUST be 74 or lower
 
-⚠️ BE HONEST AND SPECIFIC. 
-- If the skin looks FLAWLESS or CLEAR, do NOT hesitate to give high scores (90-100). Do not artificially lower scores for "realism".
-- If you see acne, score texture/pores lower. 
-- If skin looks dry, score hydration lower. 
-- If there's uneven tone, score it accordingly.
+Analyze these 4 categories:
+1. PORES: Size, visibility, congestion, blackheads
+2. TEXTURE: Smoothness, acne, bumps, scarring, fine lines
+3. TONE: Color uniformity, dark spots, redness, blemishes
+4. HYDRATION: Moisture balance, dryness, oiliness
 
-Respond ONLY with this JSON format, no other text:
+Respond ONLY with this JSON format:
 {"pores":{"score":XX,"confidence":0.X},"texture":{"score":XX,"confidence":0.X},"tone":{"score":XX,"confidence":0.X},"hydration":{"score":XX,"confidence":0.X}}`;
 
         console.log('[Vision Agent] Calling Llama Vision model...');
